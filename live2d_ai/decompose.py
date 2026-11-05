@@ -1,0 +1,408 @@
+"""Split a flattened illustration into layers ("parts") from a declarative spec.
+
+Spec (list of part dicts), drawn back->front by ``z``:
+  id      unique name
+  z       draw order (bigger = in front)
+  zone    polygon or list of polygons [[x,y],...]: where this part may claim visible pixels
+  color   optional colour gate: {"near": [[r,g,b],..], "tol": 14}  keep pixels close to a colour
+                                {"far":  [[r,g,b],..], "tol": 14}  keep pixels far from all colours
+  extent  optional polygon(s): the part's *full* shape including areas hidden behind front parts
+          (those hidden pixels are reconstructed by inpainting). Default: no amodal extension.
+  bleed   px of under-lap hidden behind front neighbours so no seam opens when parts move (default 8)
+  over    id of the base part this layer sits on with *semi-transparent* pixels (hair strands over
+          skin): alpha is solved from colour projection instead of a hard cut.
+
+Pixels belong to the front-most part whose zone+colour claims them; everything is conserved so that
+compositing all parts reproduces the source image.
+"""
+import numpy as np
+import cv2
+from scipy import ndimage as ndi
+
+
+def _ellipse_poly(cx, cy, rx, ry, deg=0, n=64):
+    t = np.linspace(0, 2 * np.pi, n, endpoint=False)
+    c, s_ = np.cos(np.radians(deg)), np.sin(np.radians(deg))
+    x, y = rx * np.cos(t), ry * np.sin(t)
+    return [[cx + x[i] * c - y[i] * s_, cy + x[i] * s_ + y[i] * c] for i in range(n)]
+
+
+def polys(spec):
+    """Normalise to a list of polygons. Accepts a polygon, a list of polygons, {"ellipse":[cx,cy,rx,ry,deg]}."""
+    if spec is None:
+        return []
+    if isinstance(spec, dict):
+        spec = [spec]
+    if len(spec) and isinstance(spec[0], (int, float)):
+        return []
+    if len(spec) and isinstance(spec[0], (list, tuple)) and len(spec[0]) == 2 and isinstance(spec[0][0], (int, float)):
+        return [spec]
+    out = []
+    for item in spec:
+        if isinstance(item, dict):
+            out.append(_ellipse_poly(*item["ellipse"]))
+        else:
+            out.extend(polys(item) if not (len(item) and isinstance(item[0], (list, tuple)) and len(item[0]) == 2 and isinstance(item[0][0], (int, float))) else [item])
+    return out
+
+
+_MASK_CACHE = {}
+
+
+def _mask_file(path):
+    import os
+    if path not in _MASK_CACHE:
+        m = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+        _MASK_CACHE[path] = (m.astype(np.float32) / 255.0)
+    return _MASK_CACHE[path]
+
+
+def poly_mask(shape, spec, feather=0.8):
+    h, w = shape
+    if isinstance(spec, dict) and "mask" in spec:           # painted region (user annotation) used verbatim
+        return _mask_file(spec["mask"])
+    m = np.zeros((h, w), np.float32)
+    S = 4
+    for p in polys(spec):
+        big = np.zeros((h * S, w * S), np.uint8)
+        pts = (np.array(p, np.float32) * S).astype(np.int32)
+        cv2.fillPoly(big, [pts], 255)
+        m = np.maximum(m, cv2.resize(big, (w, h), interpolation=cv2.INTER_AREA).astype(np.float32) / 255)
+    return m
+
+
+def lab_of(rgb_u8):
+    return cv2.cvtColor(rgb_u8, cv2.COLOR_RGB2LAB).astype(np.float32)
+
+
+def color_gate(rgb_u8, rule):
+    """Soft 0..1 gate. rule: dict or list of dicts (AND).
+    {"near":[rgb..],"tol":T} | {"far":[rgb..],"tol":T} | {"lab":{"L":[lo,hi],"a":[..],"b":[..]},"soft":s}"""
+    if not rule:
+        return 1.0
+    if isinstance(rule, list):
+        g = 1.0
+        for r in rule:
+            g = g * color_gate(rgb_u8, r)
+        return g
+    if "any" in rule:              # union of rules
+        g = 0.0
+        for r in rule["any"]:
+            g = np.maximum(g, color_gate(rgb_u8, r))
+        return g
+    lab = lab_of(rgb_u8)
+    if "lab" in rule:
+        soft = float(rule.get("soft", 3))
+        g = np.ones(lab.shape[:2], np.float32)
+        for ch, name in enumerate("Lab"):
+            if name in rule["lab"]:
+                lo, hi = rule["lab"][name]
+                v = lab[..., ch]
+                g = g * np.clip((v - lo) / soft + 0.5, 0, 1) * np.clip((hi - v) / soft + 0.5, 0, 1)
+        return g
+    tol = float(rule.get("tol", 14))
+    key = "near" if "near" in rule else "far"
+    cols = np.array(rule[key], np.uint8).reshape(-1, 1, 3)
+    ref = cv2.cvtColor(cols, cv2.COLOR_RGB2LAB).reshape(-1, 3).astype(np.float32)
+    d = np.min(np.linalg.norm(lab[:, :, None, :] - ref[None, None], axis=3), axis=2)
+    soft = np.clip((tol * 1.4 - d) / (tol * 0.4), 0, 1)
+    return soft if key == "near" else 1 - soft
+
+
+def push_pull_fill(rgb, known, levels=7):
+    """Smoothly propagate colours from `known` (bool) into the rest (multi-scale push-pull)."""
+    h, w = known.shape
+    num = rgb.astype(np.float32) * known[..., None]
+    den = known.astype(np.float32)
+    pyr = [(num, den)]
+    for _ in range(levels):
+        n, d = pyr[-1]
+        if min(n.shape[:2]) < 4:
+            break
+        pyr.append((cv2.resize(n, (n.shape[1] // 2, n.shape[0] // 2), interpolation=cv2.INTER_AREA),
+                    cv2.resize(d, (d.shape[1] // 2, d.shape[0] // 2), interpolation=cv2.INTER_AREA)))
+    est = None
+    for n, d in reversed(pyr):
+        cur = n / np.maximum(d[..., None], 1e-6)
+        if est is not None:
+            up = cv2.resize(est, (n.shape[1], n.shape[0]), interpolation=cv2.INTER_LINEAR)
+            wgt = np.clip(d[..., None] * 4, 0, 1)
+            cur = cur * wgt + up * (1 - wgt)
+        est = cur
+    return est
+
+
+def fill_hidden(rgb, known, hidden, method="pushpull"):
+    """Return rgb with `hidden` pixels reconstructed from `known` pixels."""
+    if not hidden.any():
+        return rgb
+    if known.sum() < 10:
+        return rgb
+    pp = push_pull_fill(rgb, known)
+    out = rgb.astype(np.float32).copy()
+    # small holes: Telea keeps local detail better than a blurry push-pull
+    hm = hidden.astype(np.uint8) * 255
+    dist = ndi.distance_transform_edt(hidden)
+    small = hidden & (dist <= 3)
+    if small.any():
+        te = cv2.inpaint(rgb.astype(np.uint8), (small * 255).astype(np.uint8), 3, cv2.INPAINT_TELEA)
+        out[small] = te[small]
+    big = hidden & ~small
+    out[big] = pp[big]
+    return out
+
+
+def decompose(rgb_u8, alpha, specs, report=None, unmix=None):
+    """rgb_u8: HxWx3 uint8 (RGB), alpha: HxW float. Returns {id: dict(rgba=full-canvas float RGBA, ...)}."""
+    h, w = alpha.shape
+    specs = [s for s in specs if "synthetic" not in s]
+    order = sorted(specs, key=lambda s: -s["z"])  # front first
+    remaining = alpha.astype(np.float32).copy()
+    vis = {}
+    for s in order:
+        zone = poly_mask((h, w), s["zone"]) if s.get("zone") is not None else np.ones((h, w), np.float32)
+        if s.get("zone_grow"):      # let the part own a few px of outline just outside its polygon
+            zone = np.maximum(zone, ndi.binary_dilation(zone > 0.5, iterations=int(s["zone_grow"])).astype(np.float32))
+        gate = color_gate(rgb_u8, s.get("color"))
+        if s.get("exclude"):        # regions this part must never take (e.g. lapel trim next to a hair bundle)
+            zone = zone * (1 - poly_mask((h, w), s["exclude"]))
+        a = zone * gate * (alpha > 0)
+        if s.get("close"):          # bridge small gaps / fill pinholes (dark shading inside silver hair, ...)
+            r = int(s["close"])
+            k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))
+            m = cv2.morphologyEx((a > 0.5).astype(np.uint8), cv2.MORPH_CLOSE, k) > 0
+            holes = ndi.binary_fill_holes(m) & ~m
+            lab_h, nh = ndi.label(holes)
+            if nh:
+                sz = ndi.sum(holes, lab_h, range(1, nh + 1))
+                m |= np.isin(lab_h, 1 + np.flatnonzero(sz <= int(s.get("fill_holes", 150))))
+            a = np.maximum(a, m.astype(np.float32) * zone * (alpha > 0))
+        if s.get("keep_big"):       # only the large connected mass stays (hair bundle); thin trims/ornaments fall back to the body
+            kb = s["keep_big"]
+            m = a > 0.5
+            core = ndi.binary_opening(m, structure=np.ones((int(kb.get("open", 3)),) * 2))
+            lab_k, nk = ndi.label(core)
+            if nk:
+                sz = ndi.sum(core, lab_k, range(1, nk + 1))
+                keep = np.isin(lab_k, 1 + np.flatnonzero(sz >= float(kb.get("min_area", 4000))))
+                keep = ndi.binary_dilation(keep, iterations=int(kb.get("open", 3)) + 1) & m     # give the rims back
+                a = np.where(keep, a, 0.0)
+        a = np.minimum(remaining, a)
+        if "min_alpha" in s:
+            a = np.where(a > s["min_alpha"], a, 0)
+        vis[s["id"]] = a
+        remaining = remaining - a
+    cleaned = {}
+    for s_ in specs:
+        c = s_.get("clean")
+        if not c:
+            continue
+        v = vis[s_["id"]]
+        gate = color_gate(rgb_u8, c["skin"])
+        zone = poly_mask((h, w), s_["zone"]) if s_.get("zone") is not None else np.ones((h, w), np.float32)
+        inner = ndi.distance_transform_edt(zone > 0.5) > float(c.get("margin", 6))
+        protect = poly_mask((h, w), c["protect"]) > 0.5 if c.get("protect") else np.zeros((h, w), bool)
+        bad = (v > 0.5) & (gate < 0.5) & inner & ~protect
+        bad = ndi.binary_dilation(bad, iterations=int(c.get("grow", 1))) & (v > 0.05) & inner & ~protect
+        cleaned[s_["id"]] = bad
+        vis[s_["id"]] = np.where(bad, 0.0, v)
+    # anything unclaimed goes to the back-most part
+    back = order[-1]["id"]
+    vis[back] = vis[back] + np.maximum(remaining, 0)
+
+    ids_front_first = [s["id"] for s in order]
+    zmap = {s["id"]: s["z"] for s in specs}
+    out = {}
+    src = rgb_u8.astype(np.float32)
+    for s in specs:
+        pid = s["id"]
+        v = vis[pid]
+        front = np.zeros((h, w), np.float32)
+        for o in ids_front_first:
+            if zmap[o] > zmap[pid]:
+                front = np.maximum(front, vis[o])
+        solid = v > 0.5
+        hidden = np.zeros((h, w), bool)
+        if pid in cleaned:      # contaminated pixels: reconstruct as clean skin (alpha 1)
+            hidden |= cleaned[pid]
+        ext = s.get("extent")
+        if ext is not None:
+            em = (alpha > 0.5) if ext == "all" else poly_mask((h, w), ext) > 0.5
+            if s.get("extent_in_figure"):      # never reconstruct pixels that are empty (transparent) in the source art
+                em &= alpha > 0.5
+            hidden |= em & (front > 0.5) & ~solid
+        bleed = int(s.get("bleed", 8))
+        if bleed > 0 and solid.any():
+            near = ndi.binary_dilation(solid, iterations=bleed)
+            if ext is not None and ext != "all":      # under-lap only inside the part's true shape (no skin leaking past the contour)
+                near &= ndi.binary_dilation(em, iterations=2)
+            hidden |= near & (front > 0.5) & ~solid
+        if s.get("extent_in_figure"):
+            hidden &= alpha > 0.5          # under-lap and reconstruction stay inside the figure (never fill empty space)
+        bg_alpha = np.zeros((h, w), np.float32)
+        if s.get("fade_exposed"):
+            # areas held only by *moving* ornaments (their outline is reconstructed as a grey shape here): fade the base
+            # layer out there so a swung ornament does not reveal a ghost of itself on the ground
+            fe = poly_mask((h, w), s["fade_exposed"]) > 0.5
+            hidden &= ~fe
+            bg_alpha = fe.astype(np.float32)
+        # source colour for this part: its own visible pixels, hidden ones inpainted
+        known = v > 0.05
+        if s.get("fill_gate"):      # only these pixels may seed the reconstruction of hidden areas
+            known_src = known & (color_gate(rgb_u8, s["fill_gate"]) > 0.5)
+        else:
+            known_src = known
+        if s.get("known_erode"):    # keep antialiased/contaminated rims out of the seed pixels
+            known_src = ndi.binary_erosion(known_src, iterations=int(s["known_erode"]))
+        if "fill_rgb" in s:
+            col = src.copy()
+            hm = ndi.gaussian_filter((hidden & ~known).astype(np.float32), 2.0)[..., None]
+            col = col * (1 - hm) + np.array(s["fill_rgb"], np.float32) * hm
+            col = np.where((hidden & ~known)[..., None], np.array(s["fill_rgb"], np.float32), col)
+        else:
+            if s.get("clean_partial"):
+                # skin parts: any pixel that is not PURE skin (hair/skin mixed fringes, hidden areas) is repainted from the
+                # surrounding pure skin, so nothing grey is left to show when the hair above moves differently
+                strict = known_src & (v > 0.97) & ~hidden
+                target = (known | hidden) & ~strict
+                col = fill_hidden(src, strict, target)
+            else:
+                col = fill_hidden(src, known_src & ~hidden, hidden & ~known)
+            if s.get("fill_smooth"):   # hidden skin/hair should be smooth, not a copy of strand edges
+                sg = float(s["fill_smooth"])
+                hm_ = (hidden & ~known)
+                if hm_.any():
+                    blurred = np.stack([ndi.gaussian_filter(col[..., c] * hm_, sg) for c in range(3)], -1)
+                    wgt = ndi.gaussian_filter(hm_.astype(np.float32), sg)[..., None]
+                    sm = blurred / np.maximum(wgt, 1e-3)
+                    col = np.where(hm_[..., None], np.where(wgt > 0.05, sm, col), col)
+        a = np.clip(v, 0, 1)
+        # alpha of the part as it sits in the stack: undo the 'over' compositing of conserved alpha
+        a_layer = np.where(front < 0.999, a / np.maximum(1 - front, 1e-3), a)
+        a_layer = np.clip(a_layer, 0, 1)
+        a_layer = np.where(hidden, 1.0, a_layer)
+        if s.get("fade_exposed"):
+            fe_ = poly_mask((h, w), s["fade_exposed"]) > 0.5
+            a_layer = np.where(fe_ & (front > 0.5) & (v < 0.5), 0.0, a_layer)
+        out[pid] = dict(rgb=col, alpha=a_layer, visible=v, hidden=hidden)
+    for cfg in unmix or []:
+        unmix_pair(rgb_u8, alpha, out, vis, cfg)
+    for s in specs:
+        ref_spec = s.get("fill_layer")
+        if not ref_spec:
+            continue
+        # Use the artist's aligned RGBA pixels only where this layer was
+        # reconstructed. Visible source pixels and unrelated layers stay intact.
+        ref = cv2.imread(ref_spec["mask"], cv2.IMREAD_UNCHANGED)
+        if ref is None or ref.ndim != 3 or ref.shape != (h, w, 4):
+            raise ValueError("fill_layer must be an aligned RGBA image on the source canvas")
+        layer = out[s["id"]]
+        ref_alpha = ref[..., 3].astype(np.float32) / 255.0
+        target = layer["hidden"]
+        if ref_spec.get("include_partial"):
+            # A soft cutout can leave part of its own colour on the backing.
+            # Replace that covered fraction too, only inside the supplied RGBA.
+            target = target | (layer["visible"] < alpha - 0.001)
+        extension = ((ref_alpha > layer["alpha"] + 0.001) & (alpha < 0.5)
+                     if ref_spec.get("extend_alpha") else np.zeros((h, w), bool))
+        target = target | extension
+        blend = ref_alpha * target
+        layer["rgb"] = (layer["rgb"] * (1 - blend[..., None])
+                        + ref[..., 2::-1].astype(np.float32) * blend[..., None])
+        if ref_spec.get("extend_alpha"):
+            # Newly revealed gaps have no source colour to blend with. Use the
+            # reference's unassociated RGB and its bounded, feathered coverage.
+            layer["rgb"] = np.where(extension[..., None], ref[..., 2::-1], layer["rgb"])
+            layer["alpha"] = np.where(extension, np.maximum(layer["alpha"], ref_alpha), layer["alpha"])
+    for s in sorted(specs, key=lambda item: item["z"]):
+        if not s.get("preserve_source"):
+            continue
+        layer = out[s["id"]]
+        below = np.zeros_like(src)
+        below_a = np.zeros((h, w), np.float32)
+        for other in sorted(specs, key=lambda item: item["z"]):
+            if other["z"] >= s["z"]:
+                continue
+            lower = out[other["id"]]
+            a = lower["alpha"]
+            below = lower["rgb"] * a[..., None] + below * (1 - a[..., None])
+            below_a = a + below_a * (1 - a)
+        below += src * (1 - below_a[..., None])
+        # The source is already a composite. Assigning its RGB to a soft hair
+        # mask blends skin into the strand a second time. Solve P=a*H+(1-a)*B.
+        # Increase coverage only when the supplied matte cannot represent P
+        # with an in-gamut colour; this keeps thin dark strands from clipping.
+        need = np.where(src < below, (below - src) / np.maximum(below, 1e-6),
+                        (src - below) / np.maximum(255 - below, 1e-6)).max(axis=2)
+        valid = (layer["visible"] > 0.001) & (alpha > 0.95)
+        a = np.where(valid, np.maximum(layer["alpha"], need), layer["alpha"])
+        colour = (src - below * (1 - a[..., None])) / np.maximum(a[..., None], 1e-6)
+        layer["rgb"] = np.where(valid[..., None], np.clip(colour, 0, 255), layer["rgb"])
+        layer["alpha"] = a
+    return out
+
+
+def unmix_pair(rgb_u8, alpha, out, vis, cfg):
+    """Soft layer separation of FRONT (hair strands, ...) over BACK (skin) inside cfg["region"].
+
+    Each antialiased pixel is P = a*H + (1-a)*S with S = clean back colour (smooth field of pure skin pixels) and
+    H = front colour (smooth field of pure hair pixels). Solving a per pixel gives crisp, soft-edged strands in the
+    front layer and a complete, strand-free skin layer behind, and composite(front, back) == source.
+    Pixels whose colour is off the S->H line (e.g. a skin shadow under the bangs) are kept as skin.
+    """
+    h, w = alpha.shape
+    P = rgb_u8.astype(np.float32)
+    fid, bid = cfg["front"], cfg["back"]
+    # pixels owned by any other part (eyes, brows, ears, ornaments...) are left alone
+    skip = set(cfg.get("keep_ids", [fid, bid, "body", "hair_back", "neck"]))
+    owned_other = np.zeros((h, w), bool)
+    for k, v_ in vis.items():
+        if k not in skip:
+            owned_other |= v_ > 0.05
+    owned_other = ndi.binary_dilation(owned_other, iterations=int(cfg.get("other_margin", 0)))
+    R = (poly_mask((h, w), cfg["region"]) > 0.5) & (alpha > 0.5) & ~owned_other
+    sg = color_gate(rgb_u8, cfg["skin"])
+    pure_skin = R & (sg > 0.97)
+    pure_skin = ndi.binary_erosion(pure_skin, iterations=1)
+    hair_seed = R & (sg < 0.03) & (vis[fid] > 0.9)
+    hair_seed = ndi.binary_erosion(hair_seed, iterations=1)
+    if pure_skin.sum() < 50 or hair_seed.sum() < 50:
+        return
+    S = push_pull_fill(P, pure_skin)
+    H = push_pull_fill(P, hair_seed)
+    d = H - S
+    denom = np.maximum((d * d).sum(2), float(cfg.get("min_contrast", 900)))
+    a = np.clip(((P - S) * d).sum(2) / denom, 0, 1)
+    resid = np.linalg.norm(P - (S + a[..., None] * d), axis=2)
+    off_line = resid > float(cfg.get("resid", 16))          # shadow / shading: skin, not a strand
+    a = np.where(off_line, 0.0, a)
+    a = np.where(sg > 0.97, 0.0, a)
+    a = np.where(hair_seed, 1.0, a)
+    a = np.where(a < float(cfg.get("a_min", 0.06)), 0.0, a)
+    a = np.where(a > float(cfg.get("a_max", 0.94)), 1.0, a)
+    a = np.where(R, a, 0.0)
+    af = out[fid]["alpha"]; ab = out[bid]["alpha"]
+    ff = out[fid]["rgb"]; fb = out[bid]["rgb"]
+    keep_front_outside = ~R
+    out[fid]["alpha"] = np.where(R, a, af)
+    mixed = (a > 0) & (a < 1)
+    out[fid]["rgb"] = np.where((R & mixed)[..., None], H, np.where((R & (a >= 1))[..., None], P, ff))
+    back_zone = poly_mask((h, w), cfg.get("back_extent", cfg["region"])) > 0.5   # whole face area: back layer is complete skin
+    labP = cv2.cvtColor(np.clip(P, 0, 255).astype(np.uint8), cv2.COLOR_RGB2LAB).astype(np.float32)
+    # skin shading (orange/pink shadows) has a yellowish tint (Lab b >= ~127); silver hair tips are bluish (b < ~125).
+    shade = (np.linalg.norm(P - S, axis=2) < float(cfg.get("shade_max", 38))) & (labP[..., 2] >= float(cfg.get("skin_b", 127.0)))
+    keep_P = (sg > 0.97) | (off_line & shade)
+    new_back = np.where((a > 0)[..., None], S, np.where(keep_P[..., None], P, fb))
+    # inside the face area but outside R (eyes, brows...) the back layer keeps its earlier reconstruction (clean skin fill)
+    out[bid]["rgb"] = np.where((back_zone & R)[..., None], new_back, fb)
+    out[bid]["alpha"] = np.where(back_zone, 1.0, ab)
+    out[fid]["unmixed"] = a
+
+
+def bbox_of(alpha, pad=4, thr=0.01):
+    ys, xs = np.where(alpha > thr)
+    if len(xs) == 0:
+        return None
+    h, w = alpha.shape
+    return (max(int(xs.min()) - pad, 0), max(int(ys.min()) - pad, 0),
+            min(int(xs.max()) + 1 + pad, w), min(int(ys.max()) + 1 + pad, h))

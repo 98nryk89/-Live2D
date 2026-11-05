@@ -1,0 +1,13 @@
+{
+  "passed": [
+    "no iPhone transport or bridge bundled",
+    "archive contains exact standalone HTML",
+    "standalone model loads and camera button present",
+    "camera stream starts without relay",
+    "stop releases capture device",
+    "denied camera has clear guidance",
+    "no browser script errors"
+  ],
+  "count": 7,
+  "scope": "model and native fake camera verified; face detector mocked, actual MediaPipe model network restricted; physical Mac camera unverified"
+}

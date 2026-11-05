@@ -1,0 +1,191 @@
+{
+  "base": {
+    "original": "character_materials/mukachi_kachi/base.png",
+    "sha256": "6f89edeb3008b213fc3a34c63024d12ec0cd0e5b3f28b8835a8f75095038d65b",
+    "size": [
+      1350,
+      1165
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transform_to_base": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ]
+    ],
+    "inliers": 0,
+    "median_landmark_error_px": 0
+  },
+  "eyes_closed": {
+    "original": "character_materials/mukachi_kachi/eyes_closed.png",
+    "sha256": "864c9767ebd6417e8423f71a617186f2f4f5c53aa60904ff99465005265f0cb8",
+    "size": [
+      1350,
+      1165
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transform_to_base": [
+      [
+        0.9972522595341528,
+        -0.0022325570888510732,
+        2.2184267704717104
+      ],
+      [
+        0.0022325570888510732,
+        0.9972522595341528,
+        -1.4316848514935132
+      ]
+    ],
+    "inliers": 112,
+    "median_landmark_error_px": 0.5269747492499234
+  },
+  "mouth_a": {
+    "original": "character_materials/mukachi_kachi/mouth_a.png",
+    "sha256": "3ba6ca489a101d145a9541494ceca90b1d2b13e1f7c8d572227e45d7d13d619c",
+    "size": [
+      1350,
+      1165
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transform_to_base": [
+      [
+        0.9989814438678514,
+        -0.005384309770896384,
+        4.878026483694638
+      ],
+      [
+        0.005384309770896384,
+        0.9989814438678514,
+        -3.4089930834784785
+      ]
+    ],
+    "inliers": 73,
+    "median_landmark_error_px": 0.8543571547960481
+  },
+  "mouth_i": {
+    "original": "character_materials/mukachi_kachi/mouth_i.png",
+    "sha256": "d7fc9a6af4d573b9d0a8f847145b36cd21c95b8fe7e6dbecff85831fdafd15a7",
+    "size": [
+      1122,
+      1402
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transform_to_base": [
+      [
+        0.8402458042685913,
+        -0.004027812278518999,
+        199.35059784420318
+      ],
+      [
+        0.004027812278518999,
+        0.8402458042685913,
+        -4.596854272087852
+      ]
+    ],
+    "inliers": 72,
+    "median_landmark_error_px": 0.5534108092968573
+  },
+  "mouth_e": {
+    "original": "character_materials/mukachi_kachi/mouth_e.png",
+    "sha256": "dfaec97bc4bba7ecb3372a299b468fcd74827ca687a857566bf8d4948d816255",
+    "size": [
+      1350,
+      1165
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transform_to_base": [
+      [
+        0.9983735458322351,
+        -0.0014497656957634802,
+        1.2417885242484967
+      ],
+      [
+        0.0014497656957634802,
+        0.9983735458322351,
+        -0.792978626072778
+      ]
+    ],
+    "inliers": 117,
+    "median_landmark_error_px": 0.5479048364714515
+  },
+  "smile": {
+    "original": "character_materials/mukachi_kachi/smile.png",
+    "sha256": "4d4c545699bfeb0ae246f2810e40efe7318c3ee39aa6e9cbedb60630dd71dd6d",
+    "size": [
+      1350,
+      1165
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transform_to_base": [
+      [
+        0.9951480443681341,
+        0.0005513451942585224,
+        4.7324562112988815
+      ],
+      [
+        -0.0005513451942585224,
+        0.9951480443681341,
+        0.5752413019489973
+      ]
+    ],
+    "inliers": 56,
+    "median_landmark_error_px": 1.177736581639073
+  },
+  "surprise": {
+    "original": "character_materials/mukachi_kachi/surprise.png",
+    "sha256": "882c5101a7df8bbab57a6408b86aaf3b32a1b26cfa0c849eec72dd1359f70ac7",
+    "size": [
+      1350,
+      1165
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transform_to_base": [
+      [
+        1.0066915512814183,
+        -0.010715391619648618,
+        -1.4338017467883684
+      ],
+      [
+        0.010715391619648618,
+        1.0066915512814183,
+        -6.431218952496659
+      ]
+    ],
+    "inliers": 40,
+    "median_landmark_error_px": 0.5229022111176089
+  }
+}

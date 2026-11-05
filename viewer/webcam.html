@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>無価値価値｜Webカメラ版 0.2.0</title>
+<style>
+:root{--bg:#1d1b24;--fg:#e8e6f0;--mut:#9b97ad;--ac:#8f7dff}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,"Hiragino Sans","Noto Sans JP",sans-serif}
+#app{display:grid;grid-template-columns:1fr 320px;height:100%}
+#stage{position:relative;background:var(--stagebg,#2b2836)}
+canvas{width:100%;height:100%;display:block}
+#panel{overflow:auto;padding:14px;border-left:1px solid #3a3648;background:#17151d}
+h2{font-size:13px;margin:14px 0 6px;color:var(--mut);letter-spacing:.04em}
+.row{display:grid;grid-template-columns:110px 1fr 38px;gap:6px;align-items:center;margin:3px 0}
+.row label{font-size:12px;color:var(--mut)}.row output{font-size:11px;text-align:right}
+input[type=range]{width:100%;accent-color:var(--ac)}
+button,.chk{background:#2a2738;color:var(--fg);border:1px solid #3d3950;border-radius:6px;padding:5px 9px;margin:2px;font-size:12px;cursor:pointer}
+button:hover{border-color:var(--ac)}
+.chk{display:inline-flex;gap:5px;align-items:center}
+#msg{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--mut)}
+@media(max-width:760px){#app{grid-template-columns:1fr;grid-template-rows:60% 40%}#panel{border-left:0;border-top:1px solid #3a3648}}
+</style></head><body>
+<div id="app"><div id="stage"><canvas id="c"></canvas><div id="msg">loading…</div></div>
+<div id="panel"><h2>無価値価値｜Webカメラ版 0.2.0</h2><p>「開始」→カメラを許可→正面で「正面を較正」。iPhone接続は不要です。</p><div><button id="reset">リセット</button><button id="bg">背景切替</button>
+<label class="chk"><input type="checkbox" id="a_blink" checked>自動まばたき</label>
+<label class="chk" style="display:none"><input type="checkbox" id="a_owlblink" checked>未使用</label>
+<label class="chk" style="display:none"><input type="checkbox" id="a_breath" checked>呼吸</label>
+<label class="chk" style="display:none"><input type="checkbox" id="a_idle" checked>ゆらぎ</label>
+<label class="chk"><input type="checkbox" id="a_phys" checked>アクセサリーの揺れ</label>
+<label class="chk"><input type="checkbox" id="a_mouse">マウス追従</label>
+<label class="chk"><input type="checkbox" id="a_wire">ワイヤー</label></div>
+<h2>表情</h2>
+<div><button id="smile" aria-pressed="false">笑顔 [1]</button><button id="surprise" aria-pressed="false">驚き [2]</button><button id="neutral">真顔 [0]</button></div>
+<label class="chk"><input type="checkbox" id="a_smile" checked>笑顔を自動判定（低感度）</label>
+<label class="chk"><input type="checkbox" id="a_surprise" checked>驚きを自動判定（低感度）</label>
+<h2>Webカメラ追跡 (MediaPipe)</h2>
+<div><button id="cam">開始</button><button id="calib">正面を較正</button>
+<label class="chk"><input type="checkbox" id="invx">左右反転</label>
+<label class="chk"><input type="checkbox" id="invy">上下反転</label>
+<label class="chk"><input type="checkbox" id="invz">傾き反転</label>
+<div class="row"><label>感度 左右</label><input type=range id="gx" min=0.5 max=4 step=0.1 value=1><output id="gxo">1.0</output></div>
+<div class="row"><label>感度 上下</label><input type=range id="gy" min=0.5 max=4 step=0.1 value=1><output id="gyo">1.0</output></div>
+<div class="row"><label>かしげの感度</label><input type=range id="gz" min=0.5 max=3 step=0.1 value=1><output id="gzo">1.0</output></div>
+<div class="row"><label>移動の感度</label><input type=range id="gm" min=0.5 max=3 step=0.1 value=1><output id="gmo">1.0</output></div>
+<video id="vid" playsinline muted style="width:100%;margin-top:6px;border-radius:6px;display:none;transform:scaleX(-1)"></video>
+<div id="camst" style="font-size:12px;color:var(--mut)"></div></div>
+<h2>パラメータ</h2><div id="params"></div></div></div>
+<script src="runtime.js"></script>
+<script src="tracking.js"></script>
+<script>
+const q=new URLSearchParams(location.search);
+const base=window.__RIG__?'':(q.get('model')||'../projects/mukachi_kachi/out')+'/';
+(async()=>{
+  const rig=window.__RIG__||await (await fetch(base+'rig.json')).json();
+  const vq=q.get('view');const m=new L2D.Model(document.getElementById('c'),rig,base,{view:vq?vq.split(',').map(Number):(rig.view||null),preserve:true});
+  window.M=m; await m.load();window.addEventListener('pagehide',()=>{window.webcamTracker?.stop();window.webcamTracker?.landmarker?.close()});
+  document.getElementById('msg').textContent='無価値価値 · Webカメラ版';m.auto.idle=false;m.auto.physics=true;m.auto.breath=false;
+  let tr=null;
+  const autoSmileBox=document.getElementById('a_smile');
+  const autoSurpriseBox=document.getElementById('a_surprise');
+  const smileButton=document.getElementById('smile');
+  const surpriseButton=document.getElementById('surprise');
+  function setSmile(value,manual=true){
+    if(manual){setAutoSmile(false);setAutoSurprise(false)}
+    if(value)setSurprise(0,false);
+    m.setParam('Smile',value?1:0);
+    smileButton.setAttribute('aria-pressed',value?'true':'false');
+    smileButton.textContent=value?'笑顔 ON [1]':'笑顔 [1]';
+  }
+  function setSurprise(value,manual=true){
+    if(manual){setAutoSmile(false);setAutoSurprise(false)}
+    if(value)setSmile(0,false);
+    m.setParam('Surprise',value?1:0);
+    surpriseButton.setAttribute('aria-pressed',value?'true':'false');
+    surpriseButton.textContent=value?'驚き ON [2]':'驚き [2]';
+  }
+  function setAutoSmile(enabled){
+    autoSmileBox.checked=enabled;
+    if(tr)tr.setAutoSmile(enabled);
+    setSmile(0,false);
+  }
+  function setAutoSurprise(enabled){
+    autoSurpriseBox.checked=enabled;
+    if(tr)tr.setAutoSurprise(enabled);
+    setSurprise(0,false);
+  }
+  autoSurpriseBox.onchange=e=>setAutoSurprise(e.target.checked);
+  autoSmileBox.onchange=e=>setAutoSmile(e.target.checked);
+  function setNeutral(manual=true){setSmile(0,manual);setSurprise(0,false)}
+  surpriseButton.onclick=()=>setSurprise(m.params.Surprise<0.5);
+  smileButton.onclick=()=>setSmile(m.params.Smile<0.5);
+  document.getElementById('neutral').onclick=()=>setNeutral();
+  window.addEventListener('keydown',e=>{
+    if(e.repeat||e.isComposing||e.ctrlKey||e.altKey||e.metaKey)return;
+    if(e.target?.isContentEditable||e.target?.closest?.('textarea,select,input:not([type=range]):not([type=checkbox])'))return;
+    if(e.key==='1'){e.preventDefault();setSmile(m.params.Smile<0.5)}
+    if(e.key==='2'){e.preventDefault();setSurprise(m.params.Surprise<0.5)}
+    if(e.key==='0'){e.preventDefault();setNeutral()}
+  });
+  setNeutral(false);
+  const box=document.getElementById('params');
+  for(const p of rig.params){ if(p.hidden) continue;
+    const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<label>${p.label||p.id}</label><input type=range min=${p.min} max=${p.max} step=${p.step||(p.max-p.min)/200} value=${p.default}><output>${p.default}</output>`;
+    const s=r.querySelector('input'),o=r.querySelector('output');
+    s.oninput=()=>{if(p.id==='Smile')setSmile(+s.value);else if(p.id==='Surprise')setSurprise(+s.value);else m.setParam(p.id,+s.value);o.textContent=(+s.value).toFixed(2)};
+    p._s=s;p._o=o;box.appendChild(r);
+  }
+  // keep sliders in sync with auto-driven params
+  setInterval(()=>{const surprised=m.params.Surprise>.5;surpriseButton.setAttribute('aria-pressed',surprised?'true':'false');surpriseButton.textContent=surprised?'驚き ON [2]':'驚き [2]';const smiling=m.params.Smile>.5;smileButton.setAttribute('aria-pressed',smiling?'true':'false');smileButton.textContent=smiling?'笑顔 ON [1]':'笑顔 [1]';for(const p of rig.params){if(p._s&&document.activeElement!==p._s){p._s.value=m.params[p.id];p._o.textContent=(+m.params[p.id]).toFixed(2)}}},100);
+  const A=(id,k)=>document.getElementById(id).onchange=e=>{m.auto[k]=e.target.checked};
+  A('a_blink','blink');A('a_owlblink','owlBlink');A('a_breath','breath');A('a_idle','idle');A('a_phys','physics');
+  document.getElementById('a_wire').onchange=e=>m.wire=e.target.checked;
+  document.getElementById('reset').onclick=()=>{m.reset();setNeutral(false);setAutoSmile(true);setAutoSurprise(true)};
+  const bgs=['#2b2836','#ffffff','#101010','#6fcf97'];let bi=0;
+  document.getElementById('bg').onclick=()=>{bi=(bi+1)%bgs.length;document.getElementById('stage').style.setProperty('--stagebg',bgs[bi])};
+  let mouse=false;document.getElementById('a_mouse').onchange=e=>mouse=e.target.checked;
+  window.addEventListener('pointermove',e=>{ if(!mouse)return;
+    const r=document.getElementById('c').getBoundingClientRect();
+    const nx=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-0.5)*2)), ny=Math.max(-1,Math.min(1,((e.clientY-r.top)/r.height-0.5)*2));
+    m.setParams({AngleX:nx*5,AngleY:(ny>0?-ny*10:-ny*5),AngleZ:-nx*1.5,BodyX:nx,BodyY:ny});});
+  const camb=document.getElementById('cam'),st=document.getElementById('camst');
+  if(camb)camb.onclick=async()=>{
+    if(tr&&tr.running){tr.stop();camb.textContent='開始';document.getElementById('vid').style.display='none';m.auto.blink=document.getElementById('a_blink').checked;m.auto.idle=document.getElementById('a_idle').checked;st.textContent='';return}
+    try{tr=window.webcamTracker=new L2DTracker(m,{autoSmile:autoSmileBox.checked,autoSurprise:autoSurpriseBox.checked});const v=document.getElementById('vid');v.style.display='block';
+      m.auto.blink=false;m.auto.idle=false;
+      await tr.start(v,t=>st.textContent=t);camb.textContent='停止';
+      const sync=()=>{tr.opts.invX=document.getElementById('invx').checked;tr.opts.invY=document.getElementById('invy').checked;tr.opts.invZ=document.getElementById('invz').checked};
+      for(const id of['invx','invy','invz'])document.getElementById(id).onchange=sync;
+      sync();
+      document.getElementById('calib').onclick=()=>tr.calibrate();
+      for(const [id,key] of [['gx','gainX'],['gy','gainY'],['gz','gainZ'],['gm','gainMove']]){const e=document.getElementById(id),o=document.getElementById(id+'o');e.oninput=()=>{tr.opts[key]=+e.value;o.textContent=(+e.value).toFixed(1)};tr.opts[key]=+e.value}
+    }catch(e){tr?.stop();tr?.landmarker?.close();document.getElementById('vid').srcObject?.getTracks().forEach(t=>t.stop());document.getElementById('vid').srcObject=null;document.getElementById('vid').style.display='none';st.textContent=L2DCamera.message(e);console.error(e)}
+  };
+  if(q.get('still')){ m.auto={blink:false,breath:false,idle:false,physics:false}; m.render(); window.READY=true; }
+  else { m.start(); window.READY=true; }
+})();
+</script></body></html>

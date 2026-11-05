@@ -1,0 +1,503 @@
+{
+  "passed": [
+    {
+      "name": "mouth mouth_a/1 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/2 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/3 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/4 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/5 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/6 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/7 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/8 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/9 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/10 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/11 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/12 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/13 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/14 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/15 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/16 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/17 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/18 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/19 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/20 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/21 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/22 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/23 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/24 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/25 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/26 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/27 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/28 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/29 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/30 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/31 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_a/32 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/1 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/2 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/3 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/4 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/5 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/6 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/7 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/8 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/9 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/10 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/11 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/12 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/13 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/14 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/15 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/16 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/17 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/18 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/19 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/20 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/21 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/22 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/23 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/24 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/25 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/26 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/27 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/28 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/29 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/30 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/31 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_i/32 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/1 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/2 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/3 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/4 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/5 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/6 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/7 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/8 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/9 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/10 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/11 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/12 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/13 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/14 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/15 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/16 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/17 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/18 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/19 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/20 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/21 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/22 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/23 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/24 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/25 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/26 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/27 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/28 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/29 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/30 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/31 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth mouth_e/32 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth smile/32 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "mouth surprise/32 preserves contour",
+      "detail": null
+    },
+    {
+      "name": "left blink continuity",
+      "detail": {
+        "max_adjacent_rgb_mean": 1.8253842775581905
+      }
+    },
+    {
+      "name": "right blink continuity",
+      "detail": {
+        "max_adjacent_rgb_mean": 1.90134472791253
+      }
+    },
+    {
+      "name": "neutral original image preserved",
+      "detail": {
+        "mean_rgb_error": 0.11643299952312827
+      }
+    },
+    {
+      "name": "roll cap and no folded mesh -12",
+      "detail": {
+        "z": -12,
+        "flipped": 0
+      }
+    },
+    {
+      "name": "roll frame margin -12",
+      "detail": null
+    },
+    {
+      "name": "roll cap and no folded mesh 12",
+      "detail": {
+        "z": 12,
+        "flipped": 0
+      }
+    },
+    {
+      "name": "roll frame margin 12",
+      "detail": null
+    },
+    {
+      "name": "all dangling accessories have active springs",
+      "detail": [
+        {
+          "id": "earring_red",
+          "physics": 0.015432855904593479,
+          "delta": 153.11895751953125
+        },
+        {
+          "id": "earring_name",
+          "physics": -0.1567482891594909,
+          "delta": 151.3255615234375
+        },
+        {
+          "id": "tassel_left_upper",
+          "physics": 0.11457452834683966,
+          "delta": 135.00079345703125
+        },
+        {
+          "id": "tassel_left_middle",
+          "physics": 0.16053329763084984,
+          "delta": 135.00177001953125
+        },
+        {
+          "id": "tassel_right_upper",
+          "physics": -0.07874666751246227,
+          "delta": 135.4071044921875
+        },
+        {
+          "id": "tassel_right_middle",
+          "physics": -0.09789237843419929,
+          "delta": 135.622314453125
+        },
+        {
+          "id": "tassel_right_lower",
+          "physics": 0.1605211509452963,
+          "delta": 135.00146484375
+        },
+        {
+          "id": "tassel_left_lower",
+          "physics": 0.12949557147780347,
+          "delta": 135.00094604492188
+        },
+        {
+          "id": "tassel_center_lower",
+          "physics": -0.14028156213974324,
+          "delta": 136.04901123046875
+        }
+      ]
+    },
+    {
+      "name": "physics off settles ornaments",
+      "detail": null
+    },
+    {
+      "name": "tracker reaches both 11-degree tilts",
+      "detail": {
+        "right": 11,
+        "left": -11
+      }
+    },
+    {
+      "name": "no script errors",
+      "detail": []
+    }
+  ],
+  "count": 109,
+  "physical_camera": "not tested"
+}

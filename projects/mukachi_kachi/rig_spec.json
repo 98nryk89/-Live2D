@@ -1,0 +1,63 @@
+{
+  "method": "continuous mesh with local source-pixel replacements",
+  "head": {
+    "type": "head3d",
+    "yaw": "AngleX",
+    "pitch": "AngleY",
+    "roll": "AngleZ",
+    "center": [
+      680,
+      300
+    ],
+    "pivot": [
+      680,
+      465
+    ],
+    "Rx": 245,
+    "Ry": 255,
+    "Rz": 155,
+    "k": 0.65,
+    "weight": {
+      "mode": "y",
+      "from": 615,
+      "to": 420,
+      "excludeEllipses": [
+        [
+          465,
+          462,
+          112,
+          106,
+          0.75
+        ]
+      ]
+    }
+  },
+  "body_motion_px": [
+    135,
+    70
+  ],
+  "independent_hair_physics": false,
+  "hidden_region_backing": {
+    "eyes": "local skin fill under moving lids",
+    "mouth": "neutral lip erased only",
+    "accessories": "local inpaint underneath selected dangling ornaments"
+  },
+  "mouth_steps": 32,
+  "eyes": "40 aperture poses; iris pixels not scaled",
+  "accessories": [
+    "earring_red",
+    "earring_name",
+    "tassel_left_upper",
+    "tassel_left_middle",
+    "tassel_right_upper",
+    "tassel_right_middle",
+    "tassel_right_lower",
+    "tassel_left_lower",
+    "tassel_center_lower"
+  ],
+  "limitations": [
+    "Continuous mesh; no separately reconstructed hidden hair/neck layers",
+    "Input closed-mouth misclassification remains an unverified baseline issue",
+    "Source silhouette colour fringe retained; local hidden ornament backing reconstructed"
+  ]
+}
