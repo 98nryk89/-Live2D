@@ -1,0 +1,265 @@
+{
+  "passed": [
+    {
+      "name": "left closed lid retains crease texture",
+      "detail": {
+        "old_detail_energy": 5.9683332443237305,
+        "new_detail_energy": 23.281665802001953
+      }
+    },
+    {
+      "name": "right closed lid retains crease texture",
+      "detail": {
+        "old_detail_energy": 2.538562059402466,
+        "new_detail_energy": 17.511110305786133
+      }
+    },
+    {
+      "name": "normal lip axis is measured",
+      "detail": {
+        "base_axis_degrees_image": -7.411492859178873,
+        "roles": {
+          "mouth_a": {
+            "source_axis": 0.0,
+            "target_axis": -7.411492859178873
+          },
+          "mouth_i": {
+            "source_axis": -6.441600099335034,
+            "target_axis": -7.411492859178873
+          },
+          "mouth_e": {
+            "source_axis": -4.927109947649014,
+            "target_axis": -7.411492859178873
+          },
+          "smile": {
+            "source_axis": -5.61758059012683,
+            "target_axis": -7.411492859178873
+          },
+          "surprise": {
+            "source_axis": -4.600914917729369,
+            "target_axis": -7.411492859178873
+          }
+        }
+      }
+    },
+    {
+      "name": "mouth_i follows normal lip slope",
+      "detail": {
+        "target": -7.411492859178873,
+        "measured": -7.4502490686561815
+      }
+    },
+    {
+      "name": "mouth_e follows normal lip slope",
+      "detail": {
+        "target": -7.411492859178873,
+        "measured": -6.766174822553061
+      }
+    },
+    {
+      "name": "smile follows normal lip slope",
+      "detail": {
+        "target": -7.411492859178873,
+        "measured": -5.710593137499642
+      }
+    },
+    {
+      "name": "rounded surprise follows normal lip axis",
+      "detail": {
+        "target": -7.411492859178873,
+        "measured": -7.4609125923710735
+      }
+    },
+    {
+      "name": "entire head follows a single roll -5",
+      "detail": {
+        "angle": -5,
+        "maxRigidError": 3.0498307296511484e-05,
+        "bodyDelta": 0,
+        "effects": [
+          {
+            "type": "head3d",
+            "yaw": "AngleX",
+            "pitch": "AngleY",
+            "roll": "AngleZ",
+            "center": [
+              680,
+              300
+            ],
+            "pivot": [
+              680,
+              485
+            ],
+            "Rx": 245,
+            "Ry": 255,
+            "Rz": 155,
+            "k": 0.65
+          },
+          {
+            "type": "translate",
+            "param": "BodyX",
+            "map": [
+              [
+                -1,
+                -135,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                135,
+                0
+              ]
+            ]
+          },
+          {
+            "type": "translate",
+            "param": "BodyY",
+            "map": [
+              [
+                -1,
+                0,
+                -70
+              ],
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                70
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "entire head follows a single roll 12",
+      "detail": {
+        "angle": 12,
+        "maxRigidError": 3.0502520303343772e-05,
+        "bodyDelta": 0,
+        "effects": [
+          {
+            "type": "head3d",
+            "yaw": "AngleX",
+            "pitch": "AngleY",
+            "roll": "AngleZ",
+            "center": [
+              680,
+              300
+            ],
+            "pivot": [
+              680,
+              485
+            ],
+            "Rx": 245,
+            "Ry": 255,
+            "Rz": 155,
+            "k": 0.65
+          },
+          {
+            "type": "translate",
+            "param": "BodyX",
+            "map": [
+              [
+                -1,
+                -135,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                135,
+                0
+              ]
+            ]
+          },
+          {
+            "type": "translate",
+            "param": "BodyY",
+            "map": [
+              [
+                -1,
+                0,
+                -70
+              ],
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                70
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "left restored without reducing right",
+      "detail": {
+        "left": -5,
+        "right": 12
+      }
+    },
+    {
+      "name": "head and neck do not fold {'AngleX': -5}",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "head and neck do not fold {'AngleX': 5}",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "head and neck do not fold {'AngleY': -10}",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "head and neck do not fold {'AngleY': 5}",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "head and neck do not fold {'AngleX': 5, 'AngleY': -10, 'AngleZ': 12}",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "head and neck do not fold {'AngleX': -5, 'AngleY': -10, 'AngleZ': -5}",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    }
+  ],
+  "count": 16,
+  "physical_camera": "not tested"
+}

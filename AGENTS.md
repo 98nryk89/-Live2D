@@ -37,3 +37,9 @@ READMEとinstructions/03_構成と技術引継ぎ.md参照。実際に確認し�
 キャラ用の局所処理はtools/character_features.pyとcharacter_accessories.py。原本7枚を保持。詳細・限界・再生成はdocs/webcam-repairs-0.2.0.md。
 目75/50/25%差分と部位別アクセサリー・背面の素材があると改善可能。全チェーンと全宝石を分割したという説明はしない。
 配布はGitHubのZIP直接ダウンロード。内部パスのリンクを利用者のダウンロードURLとして案内しない。旧0.1.2を残す。
+
+## 最新：0.3.0（利用者による0.2.0の見え方の指摘を修正）
+左を増やす依頼はなかったため、左は元の5度に戻し、右12度を保持する。入力・モデルともAngleZは-5〜+12。
+V完成版91f240f75a437830697126397fce60a8202b6b16のhead/neck/body構成を参照。このキャラもtools/character_head.pyで頭/首/胴に分割。head・目・口に熊除外の重みをかけない。首だけ重みを持ち、下顎裏を局所肌補完。
+目の肌inpaintは廃止。提供閉じ目の瞼・二重線・陰影を使う。眉と頬の星は保持。口は通常口の約-7.4度の軸に局所補正し、肌や輪郭を回さない。
+再生成はprepare_character.py→build_character.py→export_webcam.py。配布0.3.0、旧0.2.0保持。詳しくはdocs/webcam-repairs-0.3.0.md。今回の変更で追加素材は要求していない。
