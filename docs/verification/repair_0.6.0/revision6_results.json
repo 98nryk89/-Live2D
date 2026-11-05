@@ -1,0 +1,164 @@
+{
+  "count": 17,
+  "passed": [
+    {
+      "name": "accepted cutouts, eye and mouth images/meshes unchanged",
+      "detail": {
+        "layers": 123
+      }
+    },
+    {
+      "name": "all nine ornaments have zero autonomous sway",
+      "detail": null
+    },
+    {
+      "name": "old collar line excluded from moving neck",
+      "detail": null
+    },
+    {
+      "name": "fixed collar uses original pixels",
+      "detail": null
+    },
+    {
+      "name": "actual neutral iris heights level within one pixel",
+      "detail": [
+        [
+          645.0124740124741,
+          305.7810810810811
+        ],
+        [
+          752.478837327894,
+          305.7815740268571
+        ]
+      ]
+    },
+    {
+      "name": "both roll limits five degrees",
+      "detail": [
+        -5,
+        5
+      ]
+    },
+    {
+      "name": "collar/body/bear fixed and neck/head not folded {'AngleZ': -5}",
+      "detail": {
+        "fixed": {
+          "collar": 0,
+          "body": 0,
+          "companion": 0
+        },
+        "folds": {
+          "head": 0,
+          "neck": 0
+        }
+      }
+    },
+    {
+      "name": "collar/body/bear fixed and neck/head not folded {'AngleZ': 0}",
+      "detail": {
+        "fixed": {
+          "collar": 0,
+          "body": 0,
+          "companion": 0
+        },
+        "folds": {
+          "head": 0,
+          "neck": 0
+        }
+      }
+    },
+    {
+      "name": "collar/body/bear fixed and neck/head not folded {'AngleZ': 5}",
+      "detail": {
+        "fixed": {
+          "collar": 0,
+          "body": 0,
+          "companion": 0
+        },
+        "folds": {
+          "head": 0,
+          "neck": 0
+        }
+      }
+    },
+    {
+      "name": "collar/body/bear fixed and neck/head not folded {'AngleX': -5, 'AngleY': -10, 'AngleZ': -5}",
+      "detail": {
+        "fixed": {
+          "collar": 0,
+          "body": 0,
+          "companion": 0
+        },
+        "folds": {
+          "head": 0,
+          "neck": 0
+        }
+      }
+    },
+    {
+      "name": "collar/body/bear fixed and neck/head not folded {'AngleX': 5, 'AngleY': 5, 'AngleZ': 5}",
+      "detail": {
+        "fixed": {
+          "collar": 0,
+          "body": 0,
+          "companion": 0
+        },
+        "folds": {
+          "head": 0,
+          "neck": 0
+        }
+      }
+    },
+    {
+      "name": "stationary character produces no ornament motion",
+      "detail": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "all nine ornaments respond to character movement",
+      "detail": {
+        "Phys_earring_red": 0.3621665645462668,
+        "Phys_earring_name": 0.3296016979633005,
+        "Phys_tassel_left_upper": 0.28052702039108146,
+        "Phys_tassel_left_middle": 0.26353178325622545,
+        "Phys_tassel_right_upper": 0.2493515835298875,
+        "Phys_tassel_right_middle": 0.2385303592723063,
+        "Phys_tassel_right_lower": 0.22802475379508522,
+        "Phys_tassel_left_lower": 0.2202920914290346,
+        "Phys_tassel_center_lower": 0.2127253569182338
+      }
+    },
+    {
+      "name": "ornaments settle after movement stops",
+      "detail": 3.2524803787076193e-16
+    },
+    {
+      "name": "smile/closed eye selection 1",
+      "detail": [
+        "eye_left_smile",
+        "eye_right_smile"
+      ]
+    },
+    {
+      "name": "smile/closed eye selection 0",
+      "detail": [
+        "eye_left_0",
+        "eye_right_0"
+      ]
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "scope": "renderer and simulated movement; physical Mac camera and OBS unverified"
+}

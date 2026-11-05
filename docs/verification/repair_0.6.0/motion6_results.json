@@ -1,0 +1,43 @@
+{
+  "count": 6,
+  "passed": [
+    {
+      "name": "each ornament visibly deflects independently of body/head motion",
+      "detail": {
+        "earring_red": 5.98980712890625,
+        "earring_name": 10.69903564453125,
+        "tassel_left_upper": 4.4727783203125,
+        "tassel_left_middle": 5.1776123046875,
+        "tassel_right_upper": 3.1085205078125,
+        "tassel_right_middle": 3.9874267578125,
+        "tassel_right_lower": 4.57373046875,
+        "tassel_left_lower": 5.171173095703125,
+        "tassel_center_lower": 4.06689453125
+      }
+    },
+    {
+      "name": "reset produces no artificial ornament impulse",
+      "detail": 0
+    },
+    {
+      "name": "calibrated tracker clamps both directions to five degrees",
+      "detail": {
+        "right": 5,
+        "left": -5
+      }
+    },
+    {
+      "name": "no transparency tears inside throat -5",
+      "detail": null
+    },
+    {
+      "name": "no transparency tears inside throat 0",
+      "detail": null
+    },
+    {
+      "name": "no transparency tears inside throat 5",
+      "detail": null
+    }
+  ],
+  "scope": "rendering with simulated movement and tracker matrix; physical Mac webcam unverified"
+}

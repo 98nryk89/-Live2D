@@ -1,5 +1,6 @@
 """Separate hair/head, attached animal ears, shoulder companion, neck and body."""
 import cv2,numpy as np
+from scipy.ndimage import distance_transform_edt
 from character_segmentation import segmentation_masks
 
 def companion_mask(shape):
@@ -17,17 +18,27 @@ def split_head(original,clean=None,segmentation=None):
   cv2.fillPoly(head,[np.array(poly,np.int32)],255)
  guard=np.maximum(cv2.dilate(bear,np.ones((7,7),np.uint8)),cv2.dilate(ears,np.ones((3,3),np.uint8)))
  head[guard>0]=0
- neck=np.zeros((h,w),np.uint8);cv2.fillPoly(neck,[np.array([[619,435],[750,435],[751,446],[699,476],[691,490],[679,491],[671,475],[621,451]],np.int32)],255)
- neck[(head>0)|(guard>0)]=0
+ # Exact front collar contour, fixed to the torso and drawn in front of the throat.
+ collar=np.zeros((h,w),np.uint8)
+ cv2.fillPoly(collar,[np.array([[618,430],[607,438],[598,461],[581,508],[580,570],[801,570],[783,491],[770,457],[764,438],[752,430],[753,444],[747,452],[731,461],[710,471],[700,477],[695,486],[693,493],[680,493],[676,480],[667,474],[649,466],[631,457],[619,451]],np.int32)],255)
+ # Overlap the original under-jaw skin: shared transforms at the top eliminate the old y=435 tear.
+ neck=np.zeros((h,w),np.uint8);cv2.fillPoly(neck,[np.array([[625,405],[743,405],[744,436],[744,442],[739,447],[728,456],[707,466],[697,473],[692,481],[690,488],[683,488],[680,478],[670,470],[651,462],[631,452],[623,446]],np.int32)],255)
+ neck[(collar>0)|(guard>0)]=0
+ head[collar>0]=0
+ # Only erase the neck where it is actually under the moving head; keep the clothing fixed.
  body=original.copy();body[:,:,3]=np.where((yy<435)|(head>0)|(neck>0)|(bear>0)|(ears>0),0,body[:,:,3])
  face=original.copy();face[:,:,3]=np.where(head>0,face[:,:,3],0)
- neckSprite=original.copy();neckSprite[:,:,3]=np.where(neck>0,neckSprite[:,:,3],0)
- backing=np.zeros_like(original);cover=np.zeros((h,w),np.uint8)
- cv2.fillPoly(cover,[np.array([[633,410],[726,410],[752,442],[699,476],[691,490],[679,491],[671,475],[621,451],[619,434]],np.int32)],255)
- samples=original[442:446,640:736,:3].mean(axis=0)
- for x in range(619,753):backing[:,x,:3]=samples[min(95,max(0,x-640))]
+ neckSprite=original.copy();neckSprite[:,:,3]=np.rint(neckSprite[:,:,3]*np.minimum(1,cv2.distanceTransform(neck,cv2.DIST_L2,3)/2)).astype(np.uint8)
+ collarSprite=original.copy();collarSprite[:,:,3]=np.where(collar>0,collarSprite[:,:,3],0)
+ # Keep the original collar seam fixed; extrapolate only the hidden skin under its lip.
+ # Nearest actual throat pixels avoid pulling any black collar line into the moving neck.
+ skin=np.zeros((h,w),np.uint8)
+ cv2.fillPoly(skin,[np.array([[635,442],[735,442],[731,450],[709,461],[697,468],[687,480],[679,470],[660,462],[639,451]],np.int32)],255)
+ _,idx=distance_transform_edt(skin==0,return_indices=True)
+ backing=original[idx[0],idx[1]].copy();cover=np.zeros((h,w),np.uint8)
+ cv2.fillPoly(cover,[np.array([[626,423],[742,423],[753,444],[747,452],[731,461],[710,471],[700,477],[695,486],[693,493],[680,493],[676,480],[667,474],[649,466],[631,457],[619,451],[619,438]],np.int32)],255)
  backing[:,:,3]=cover
- parts=[('neck_backing',backing),('body',body)]
+ parts=[('neck_backing',backing),('body',body),('collar',collarSprite)]
  if clean is not None:
   region=np.zeros((h,w),np.uint8);region[300:435,450:625]=255
   hair=clean.copy();hair[:,:,3]=np.where((cv2.dilate(bear,np.ones((7,7),np.uint8))>0)&(region>0),hair[:,:,3],0)

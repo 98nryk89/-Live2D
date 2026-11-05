@@ -37,6 +37,7 @@
     else if (w.mode === 'dist') t = Math.hypot(x - w.pivot[0], y - w.pivot[1]) / w.len;
     else t = 1;
     t = clamp(t, 0, 1);
+    if (w.smooth) t=t*t*(3-2*t);
     if (w.pow) t = Math.pow(t, w.pow);
     for (const a of w.excludeEllipses || []) {
       const [cx,cy,rx,ry,feather]=a;
@@ -127,7 +128,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
       this.params[id] = clamp(v, d.min, d.max);
     }
     setParams(o) { for (const k in o) this.setParam(k, o[k]); }
-    reset() { this.eyeFrame={left:2,right:2};for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; } this._sleeveState = null; }
+    reset() { this.eyeFrame={left:2,right:2};for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; s.prevIn=0; s.prevInV=0; } this._sleeveState = null; }
 
     // ---- animation drivers ------------------------------------------------
     _drive(dt) {
@@ -198,7 +199,8 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
         const iaC = clamp(ia, -3000, 3000), ivC = clamp(iv, -300, 300);
         for (let k = 0; k < steps; k++) {
           const amb = d.sway ? d.sway * w * w * Math.sin(this.time * 2 * Math.PI * (0.28 + 0.07 * (pi % 4)) + pi * 1.7) : 0;   // gentle ambient sway
-          const acc = -w * w * s.a - 2 * z * w * s.av - K * iaC * 0.01 - drag * ivC * 0.01 + amb;
+          const drive = d.driveGain != null ? d.driveGain : 1;
+          const acc = -w * w * s.a - 2 * z * w * s.av - drive * (K * iaC * 0.01 + drag * ivC * 0.01) + amb;
           s.av += acc * h; s.a += s.av * h;
           s.a = clamp(s.a, -1.2, 1.2);
         }
@@ -257,7 +259,10 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
               else { const r2 = (u / Rx) * (u / Rx) + (v / Ry) * (v / Ry); z = zoff + k * Rz * Math.sqrt(Math.max(1 - r2, zmin)); }
               const x1 = u * cy + z * sy, z1 = -u * sy + z * cy;
               const y1 = v * cp - z1 * sp;
-              const X = cx + x1, Y = cyy + y1, dx = X - pv2[0], dy = Y - pv2[1];
+              let X = cx + x1, Y = cyy + y1;
+              // Correct the authored head tilt without consuming the user's roll range.
+              if(e.restRoll){const a=e.restRoll*DEG,c=Math.cos(a),s=Math.sin(a),p=e.restRollPivot||pv2,dx=X-p[0],dy=Y-p[1];X=p[0]+dx*c-dy*s;Y=p[1]+dx*s+dy*c;}
+              const dx = X - pv2[0], dy = Y - pv2[1];
               out[0] = pv2[0] + dx * cr - dy * sr; out[1] = pv2[1] + dx * sr + dy * cr;
             };
             const rigid = e.rigid || 0;
