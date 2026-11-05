@@ -49,3 +49,8 @@ V完成版91f240f75a437830697126397fce60a8202b6b16のhead/neck/body構成を参�
 入力とリグのかしげは左右とも5度。口は0.3.0を維持し、98口PNG/メッシュの完全一致を検証。
 肩の熊はcompanionに独立し、耳の画素をheadに混ぜない。熊の裏の髪は提供のclean_backingからだけ補い、髪は頭に追従、熊は肩に固定。熊を前に描く。頭上の熊耳は頭固定を維持。
 再生成順はprepare_character.py→prepare_revision4.py→build_character.py→export_webcam.py。0.4.0の詳細はdocs/webcam-repairs-0.4.0.mdを読む。旧0.3.0は保存。
+
+## 最新：0.5.0（片側の範囲・笑顔目・精密な部位分離・装飾）
+入力とリグは左5度／右10度。笑顔は元のsmileの目を復元して優先表示。通常の提供3枚の瞬きと承認済みの口98枚は維持。
+character_segmentation.pyの原本輪郭マスクで肩の熊と頭上の左右耳を分離し、頭と胴の両方から除外。頭上の耳は頭固定、肩の熊は胴固定。隠れた髪と装飾裏は提供のclean_backingからのみ補う。
+9装飾は個別の輪郭と支点で揺れを増加。色分けはshow_segmentation.py、実描画のGIFはverify_ornament_motion.py。詳細はdocs/webcam-repairs-0.5.0.md。元0.4.0 ZIPを保存。実Macカメラ/OBSは未確認。

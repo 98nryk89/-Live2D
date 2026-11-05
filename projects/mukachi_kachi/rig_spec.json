@@ -26,7 +26,7 @@
   "hidden_region_backing": {
     "eyes": "approved sheet, open/half/closed source pixels only",
     "mouth": "neutral lip erased only",
-    "accessories": "local inpaint underneath selected dangling ornaments"
+    "accessories": "supplied clean backing beneath isolated ornaments"
   },
   "mouth_steps": 32,
   "eyes": "three approved drawings, no local warps or synthetic intermediate frames",

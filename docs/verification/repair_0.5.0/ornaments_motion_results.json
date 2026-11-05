@@ -1,0 +1,16 @@
+{
+  "fixed_pose_motion_range_source_px": {
+    "earring_red": 5.629638671875,
+    "earring_name": 10.96417236328125,
+    "tassel_left_upper": 7.390411376953125,
+    "tassel_left_middle": 8.7615966796875,
+    "tassel_right_upper": 5.37554931640625,
+    "tassel_right_middle": 7.6578369140625,
+    "tassel_right_lower": 8.67529296875,
+    "tassel_left_lower": 10.639617919921875,
+    "tassel_center_lower": 8.06939697265625
+  },
+  "physics_default_on": true,
+  "physics_off_resets": true,
+  "scope": "actual browser renderer with simulated time; physical camera unverified"
+}

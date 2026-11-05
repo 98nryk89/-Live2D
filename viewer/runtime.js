@@ -228,7 +228,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
                 if(state===0&&open>.33)state=1;
                 if(state===1&&open>.83)state=2;
                 this.eyeFrame[e.group]=state;
-                selected=state<2?state:surprise?42:smile?0:2;
+                selected=smile?41:state<2?state:surprise?42:2;
               }else selected=surprise?42:smile?41:open>=.999?-1:Math.max(0,Math.min(39,Math.round(open*40)));
             }
             opacity*=selected===e.index?1:0;
