@@ -12,24 +12,24 @@ s=s.replace('<script>\nconst q=','<script>window.__RIG__='+json.dumps(rig,ensure
 assert 'window.__RIG__=' in s
 assert 'WebSocket(' not in s and 'iOSTrackingDataRequest' not in s
 html=D/'mukachi_kachi_webcam.html';html.write_text(s)
-readme='''無価値価値 Webカメラ専用版 0.3.0
+readme='''無価値価値 Webカメラ専用版 0.4.0
 
 GitHubからこのZIPを保存し、MacのFinderの「ダウンロード」で展開してください。
-中の mukachi_kachi_webcam_0.3.0.html をGoogle Chromeで開き、「開始」を押します。
+中の mukachi_kachi_webcam_0.4.0.html をGoogle Chromeで開き、「開始」を押します。
 チャット内のプレビューはカメラを使えません。
 
 元のVプロジェクトと同じ、単一HTML＋Webカメラ追跡方式です。
 iPhone、VTube Studio、Node.js、npm、中継サーバーは不要です。
 顔認識用ライブラリとモデルは初回開始時にインターネットから取得します。
 正面・閉じ口で「正面を較正」。1=笑顔、2=驚き、0=通常です。
-左かしげは元の5度、右は12度です。頭・首・胴を分離し、顔の片側が残る変形を修正しました。
-閉じ目は提供画像の瞼と陰影を使用し、口差分の傾きを通常口に合わせています。
+かしげは左右とも5度です。頭・首・胴を分離し、顔の片側が残る変形を修正しました。
+目は新しく提供された開・半開・閉の3枚をそのまま使い、変形補間はしません。口は0.3.0の状態を維持しています。
 この版のMac実カメラとOBSは未確認です。
 '''
-archive=D/'mukachi_kachi_webcam_0.3.0.zip'
+archive=D/'mukachi_kachi_webcam_0.4.0.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
- z.write(html,'Mukachi_Webcam_0.3.0/mukachi_kachi_webcam_0.3.0.html')
- z.writestr('Mukachi_Webcam_0.3.0/はじめに.txt',readme)
- z.writestr('Mukachi_Webcam_0.3.0/VERSION.txt','Model SHA256 '+hashlib.sha256(html.read_bytes()).hexdigest()+'\nViewer source: 98nryk89/V @6a5e70a5f69bfcb85706e82e5ffa9149319b78d9 (webcam distribution)\n')
-with zipfile.ZipFile(archive) as z:assert z.testzip() is None and z.read('Mukachi_Webcam_0.3.0/mukachi_kachi_webcam_0.3.0.html')==html.read_bytes()
+ z.write(html,'Mukachi_Webcam_0.4.0/mukachi_kachi_webcam_0.4.0.html')
+ z.writestr('Mukachi_Webcam_0.4.0/はじめに.txt',readme)
+ z.writestr('Mukachi_Webcam_0.4.0/VERSION.txt','Model SHA256 '+hashlib.sha256(html.read_bytes()).hexdigest()+'\nViewer source: 98nryk89/V @6a5e70a5f69bfcb85706e82e5ffa9149319b78d9 (webcam distribution)\n')
+with zipfile.ZipFile(archive) as z:assert z.testzip() is None and z.read('Mukachi_Webcam_0.4.0/mukachi_kachi_webcam_0.4.0.html')==html.read_bytes()
 print(archive)

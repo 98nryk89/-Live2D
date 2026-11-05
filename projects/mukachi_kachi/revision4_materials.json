@@ -1,0 +1,93 @@
+{
+  "blink_open": {
+    "source": "character_materials/mukachi_kachi/revision4_originals/144293AF-BF17-45E0-9F65-2D0D24772930.PNG",
+    "sha256": "f47a8872b649cc256893cadc7e505ff1d5d3a3de5587b8862f1a122640c06847",
+    "panel_crop": [
+      0,
+      0,
+      724,
+      724
+    ],
+    "transform_to_base": [
+      [
+        1.129806306804893,
+        -0.0002571436412298559,
+        256.4507853087948
+      ],
+      [
+        0.0002571436412298559,
+        1.129806306804893,
+        -0.3906222916688009
+      ]
+    ],
+    "inliers": 30,
+    "median_error_px": 0.48740357196180994
+  },
+  "blink_half": {
+    "source": "character_materials/mukachi_kachi/revision4_originals/144293AF-BF17-45E0-9F65-2D0D24772930.PNG",
+    "sha256": "f47a8872b649cc256893cadc7e505ff1d5d3a3de5587b8862f1a122640c06847",
+    "panel_crop": [
+      724,
+      0,
+      1448,
+      724
+    ],
+    "transform_to_base": [
+      [
+        1.1346300405972751,
+        -0.0028333017796102343,
+        254.87175837447262
+      ],
+      [
+        0.0028333017796102343,
+        1.1346300405972751,
+        -2.0830067309272393
+      ]
+    ],
+    "inliers": 38,
+    "median_error_px": 0.651534444920105
+  },
+  "blink_closed": {
+    "source": "character_materials/mukachi_kachi/revision4_originals/144293AF-BF17-45E0-9F65-2D0D24772930.PNG",
+    "sha256": "f47a8872b649cc256893cadc7e505ff1d5d3a3de5587b8862f1a122640c06847",
+    "panel_crop": [
+      1448,
+      0,
+      2172,
+      724
+    ],
+    "transform_to_base": [
+      [
+        1.1310148724606803,
+        0.0006449262741549574,
+        255.8098942378557
+      ],
+      [
+        -0.0006449262741549574,
+        1.1310148724606803,
+        -0.12428702812992243
+      ]
+    ],
+    "inliers": 37,
+    "median_error_px": 0.5328157164557992
+  },
+  "clean_backing": {
+    "source": "character_materials/mukachi_kachi/revision4_originals/3ED546B9-763F-4477-A112-0E897A623EE3.PNG",
+    "sha256": "df6deb8664e6498763978cede8427956bc02d24f74c9867ea554e31aeac61ddf",
+    "panel_crop": null,
+    "transform_to_base": [
+      [
+        0.9998219726348332,
+        0.0009220092818983143,
+        0.5516138959624083
+      ],
+      [
+        -0.0009220092818983143,
+        0.9998219726348332,
+        0.5438440367985639
+      ]
+    ],
+    "inliers": 54,
+    "median_error_px": 0.5171460104654517
+  }
+}

@@ -6,7 +6,8 @@ import sys,json,copy,hashlib
 import cv2,numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from live2d_ai.build import make_mesh
-from character_features import mouth_sprites,eye_sprites,mouth_axes
+from character_features import mouth_sprites,mouth_axes
+from character_blinks import authored_eye_sprites
 from character_accessories import split_accessories
 from character_head import split_head
 ROOT=Path(__file__).resolve().parents[1];P=ROOT/'projects/mukachi_kachi';OUT=P/'out';OUT.mkdir(exist_ok=True)
@@ -22,10 +23,11 @@ def part(pid,im,x,y,selector=None):
  es=copy.deepcopy(effects)
  if selector:es.insert(0,{'type':'feature','group':selector[0],'index':selector[1]})
  parts.append({'id':pid,'z':len(parts),'tex':tex,'mesh':mesh,'effects':es})
-for name,sprite in split_head(backed):
+for name,sprite in split_head(backed,clean=images['clean_backing']):
  part(name,sprite,0,0)
- if name in ['body','neck_backing']:parts[-1]['effects']=copy.deepcopy(effects[1:])
+ if name in ['body','neck_backing','companion']:parts[-1]['effects']=copy.deepcopy(effects[1:])
  elif name=='neck':parts[-1]['effects'][0]['weight']=neck_weight
+ if name=='companion':parts[-1]['z']=900
 
 
 def patch(role,box,feather=7,warp=None):
@@ -41,11 +43,11 @@ def patch(role,box,feather=7,warp=None):
  a=np.clip((1-radius)*min(rx,ry)/feather,0,1)
  im[:,:,3]=np.rint(im[:,:,3]*a).astype(np.uint8)
  return im
-# Fixed pupil/eyeball pixels are progressively occluded by 40 lid poses.
+# Approved drawings only: closed, half-open, open. No generated intermediate poses.
 for eye in ['left','right']:
- sprites,box=eye_sprites(base,images['eyes_closed'],eye,levels=40)
+ sprites,box,_=authored_eye_sprites(images,eye)
  for level,sprite in enumerate(sprites):part('eye_'+eye+'_'+str(level),sprite,box[0],box[1],(eye,level))
- for role,index in [('smile',41),('surprise',42)]:part('eye_'+eye+'_'+role,patch(role,box),box[0],box[1],(eye,index))
+ for role,index in [('surprise',42)]:part('eye_'+eye+'_'+role,patch(role,box),box[0],box[1],(eye,index))
 mouths,box,mouth_bounds=mouth_sprites(images,levels=32)
 for form,role in enumerate(['mouth_a','mouth_i','mouth_e']):
  for level in range(1,33):part(f'mouth_{form}_{level}',mouths[(role,level)],box[0],box[1],('mouth',form*32+level))
@@ -64,19 +66,19 @@ for i,(name,sprite,x,y,pivot,is_head) in enumerate(accessories):
 # Only the small companion's eyes change on smiling; no shoulder/costume replacement.
 box=(408,389,520,447)
 part('companion_smile',patch('smile',box),box[0],box[1],('companion',1))
-parts[-1]['effects'].pop(1)
+parts[-1]['effects'].pop(1);parts[-1]['z']=901
 params=[]
 def param(id,lo,hi,default,label,step=None):
  p={'id':id,'min':lo,'max':hi,'default':default,'label':label}
  if step:p['step']=step
  params.append(p)
-for id,lo,hi,label in [('AngleX',-5,5,'顔 左右'),('AngleY',-10,5,'顔 下・上'),('AngleZ',-5,12,'顔 かしげ（左5度・右12度）'),('BodyX',-1,1,'全体 左右'),('BodyY',-1,1,'全体 上下')]:param(id,lo,hi,0,label)
+for id,lo,hi,label in [('AngleX',-5,5,'顔 左右'),('AngleY',-10,5,'顔 下・上'),('AngleZ',-5,5,'顔 かしげ（左右5度）'),('BodyX',-1,1,'全体 左右'),('BodyY',-1,1,'全体 上下')]:param(id,lo,hi,0,label)
 for id,label in [('EyeLOpen','左目'),('EyeROpen','右目')]:param(id,0,1,1,label)
 param('MouthOpen',0,1,0,'口 開き');param('MouthForm',0,2,0,'口 0あ/1い/2え',1)
 for id,label in [('Smile','笑顔'),('Surprise','驚き')]:param(id,0,1,0,label,1)
 param('AccessoryGain',0,2,1,'アクセサリーの揺れ量')
 for d in physics:params.append({'id':d['output'],'min':-1,'max':1,'default':0,'hidden':True})
-rig={'version':1,'name':'無価値価値','modelId':'mukachi_kachi','size':[W,H],'view':[-210,-115,1770,1400],'params':params,'parts':parts,'physics':physics}
+rig={'version':1,'name':'無価値価値','modelId':'mukachi_kachi','size':[W,H],'view':[-210,-115,1770,1400],'params':params,'parts':parts,'physics':physics,'eyeMode':'authored-three-poses'}
 (OUT/'rig.json').write_text(json.dumps(rig,ensure_ascii=False,separators=(',',':')))
-(P/'rig_spec.json').write_text(json.dumps({'method':'separate head, neck and body following V completed rig','head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'actual closed-eye reference including eyelid and crease','mouth':'neutral lip erased only','accessories':'local inpaint underneath selected dangling ornaments'},'mouth_steps':32,'eyes':'40 aperture poses with supplied eyelid skin/crease; no inpainted eye backing','accessories':[a[0] for a in accessories],'limitations':['Separate head/neck/body; local skin backing under jaw; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
+(P/'rig_spec.json').write_text(json.dumps({'method':'separate head, neck and body following V completed rig','head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'approved sheet, open/half/closed source pixels only','mouth':'neutral lip erased only','accessories':'local inpaint underneath selected dangling ornaments'},'mouth_steps':32,'eyes':'three approved drawings, no local warps or synthetic intermediate frames','accessories':[a[0] for a in accessories],'limitations':['Separate head/neck/body; local skin backing under jaw; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
 print('built',len(parts),'mesh layers; source SHA',hashlib.sha256((ROOT/'character_materials/mukachi_kachi/base.png').read_bytes()).hexdigest())

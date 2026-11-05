@@ -78,6 +78,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
       this.time = 0; this.auto = { blink: true, owlBlink: true, breath: true, idle: true, physics: true };
       this.blink = { next: 2.5, t: -1 };
       this.owlBlink = { next: 4.3, t: -1 };
+      this.eyeFrame={left:2,right:2};
       this.wire = false;
     }
 
@@ -126,7 +127,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
       this.params[id] = clamp(v, d.min, d.max);
     }
     setParams(o) { for (const k in o) this.setParam(k, o[k]); }
-    reset() { for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; } this._sleeveState = null; }
+    reset() { this.eyeFrame={left:2,right:2};for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; } this._sleeveState = null; }
 
     // ---- animation drivers ------------------------------------------------
     _drive(dt) {
@@ -220,7 +221,15 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
             else if(e.group==='companion')selected=smile?1:-1;
             else {
               const open=P[e.group==='left'?'EyeROpen':'EyeLOpen'];
-              selected=surprise?42:smile?41:open>=.999?-1:Math.max(0,Math.min(39,Math.round(open*40)));
+              if(this.rig.eyeMode==='authored-three-poses'){
+                let state=this.eyeFrame[e.group]??2;
+                if(state===2&&open<.67)state=1;
+                if(state===1&&open<.17)state=0;
+                if(state===0&&open>.33)state=1;
+                if(state===1&&open>.83)state=2;
+                this.eyeFrame[e.group]=state;
+                selected=state<2?state:surprise?42:smile?0:2;
+              }else selected=surprise?42:smile?41:open>=.999?-1:Math.max(0,Math.min(39,Math.round(open*40)));
             }
             opacity*=selected===e.index?1:0;
             if(opacity<=0){part._opacity=0;return;}

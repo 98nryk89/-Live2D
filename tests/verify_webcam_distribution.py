@@ -8,7 +8,7 @@ def check(label,ok):
  results.append(label);print('PASS',label)
 html=(R/'dist/mukachi_kachi_webcam.html').read_text()
 check('no iPhone transport or bridge bundled','WebSocket(' not in html and 'iOSTrackingDataRequest' not in html and 'L2DInput' not in html)
-with zipfile.ZipFile(R/'dist/mukachi_kachi_webcam_0.3.0.zip') as z:check('archive contains exact standalone HTML',z.read('Mukachi_Webcam_0.3.0/mukachi_kachi_webcam_0.3.0.html')==html.encode())
+with zipfile.ZipFile(R/'dist/mukachi_kachi_webcam_0.4.0.zip') as z:check('archive contains exact standalone HTML',z.read('Mukachi_Webcam_0.4.0/mukachi_kachi_webcam_0.4.0.html')==html.encode())
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream'])
  pg=b.new_page(viewport={'width':1400,'height':1000});errors=[];pg.on('pageerror',lambda e:errors.append(str(e)))

@@ -24,12 +24,12 @@
   ],
   "independent_hair_physics": false,
   "hidden_region_backing": {
-    "eyes": "actual closed-eye reference including eyelid and crease",
+    "eyes": "approved sheet, open/half/closed source pixels only",
     "mouth": "neutral lip erased only",
     "accessories": "local inpaint underneath selected dangling ornaments"
   },
   "mouth_steps": 32,
-  "eyes": "40 aperture poses with supplied eyelid skin/crease; no inpainted eye backing",
+  "eyes": "three approved drawings, no local warps or synthetic intermediate frames",
   "accessories": [
     "earring_red",
     "earring_name",

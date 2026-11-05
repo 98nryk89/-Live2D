@@ -1,0 +1,196 @@
+{
+  "passed": [
+    {
+      "name": "all accepted mouth textures and meshes unchanged",
+      "detail": {
+        "mouth_layers": 98
+      }
+    },
+    {
+      "name": "no procedural blink frame set remains",
+      "detail": null
+    },
+    {
+      "name": "left blink_closed RGB copied from approved drawing",
+      "detail": null
+    },
+    {
+      "name": "left blink_closed has opaque eye core",
+      "detail": {
+        "opaque_pixels": 3744
+      }
+    },
+    {
+      "name": "left blink_half RGB copied from approved drawing",
+      "detail": null
+    },
+    {
+      "name": "left blink_half has opaque eye core",
+      "detail": {
+        "opaque_pixels": 3727
+      }
+    },
+    {
+      "name": "left blink_open RGB copied from approved drawing",
+      "detail": null
+    },
+    {
+      "name": "left blink_open has opaque eye core",
+      "detail": {
+        "opaque_pixels": 3713
+      }
+    },
+    {
+      "name": "right blink_closed RGB copied from approved drawing",
+      "detail": null
+    },
+    {
+      "name": "right blink_closed has opaque eye core",
+      "detail": {
+        "opaque_pixels": 3574
+      }
+    },
+    {
+      "name": "right blink_half RGB copied from approved drawing",
+      "detail": null
+    },
+    {
+      "name": "right blink_half has opaque eye core",
+      "detail": {
+        "opaque_pixels": 3565
+      }
+    },
+    {
+      "name": "right blink_open RGB copied from approved drawing",
+      "detail": null
+    },
+    {
+      "name": "right blink_open has opaque eye core",
+      "detail": {
+        "opaque_pixels": 3558
+      }
+    },
+    {
+      "name": "bear ear belongs only to companion foreground (490, 342)",
+      "detail": null
+    },
+    {
+      "name": "bear ear belongs only to companion foreground (500, 341)",
+      "detail": null
+    },
+    {
+      "name": "bear ear belongs only to companion foreground (508, 346)",
+      "detail": null
+    },
+    {
+      "name": "bear ear belongs only to companion foreground (514, 353)",
+      "detail": null
+    },
+    {
+      "name": "clean backing used for hair behind bear",
+      "detail": null
+    },
+    {
+      "name": "new ZIP contains exact verified HTML",
+      "detail": null
+    },
+    {
+      "name": "open selects exactly its supplied drawing",
+      "detail": [
+        [
+          "eye_left_2"
+        ],
+        [
+          "eye_right_2"
+        ]
+      ]
+    },
+    {
+      "name": "half selects exactly its supplied drawing",
+      "detail": [
+        [
+          "eye_left_1"
+        ],
+        [
+          "eye_right_1"
+        ]
+      ]
+    },
+    {
+      "name": "closed selects exactly its supplied drawing",
+      "detail": [
+        [
+          "eye_left_0"
+        ],
+        [
+          "eye_right_0"
+        ]
+      ]
+    },
+    {
+      "name": "blink uses only authored frames",
+      "detail": [
+        [
+          "eye_left_2"
+        ],
+        [
+          "eye_left_2"
+        ],
+        [
+          "eye_left_1"
+        ],
+        [
+          "eye_left_1"
+        ],
+        [
+          "eye_left_0"
+        ],
+        [
+          "eye_left_0"
+        ],
+        [
+          "eye_left_0"
+        ],
+        [
+          "eye_left_1"
+        ],
+        [
+          "eye_left_1"
+        ],
+        [
+          "eye_left_2"
+        ],
+        [
+          "eye_left_2"
+        ]
+      ]
+    },
+    {
+      "name": "companion ear stationary under tilt -5",
+      "detail": {
+        "angle": -5,
+        "earDelta": 0
+      }
+    },
+    {
+      "name": "companion ear stationary under tilt 5",
+      "detail": {
+        "angle": 5,
+        "earDelta": 0
+      }
+    },
+    {
+      "name": "both tilt limits 5 degrees",
+      "detail": [
+        -5,
+        5
+      ]
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "count": 28,
+  "scope": "approved-image fidelity, scene ownership and renderer; physical Mac webcam/OBS unverified"
+}

@@ -43,3 +43,9 @@ READMEとinstructions/03_構成と技術引継ぎ.md参照。実際に確認し�
 V完成版91f240f75a437830697126397fce60a8202b6b16のhead/neck/body構成を参照。このキャラもtools/character_head.pyで頭/首/胴に分割。head・目・口に熊除外の重みをかけない。首だけ重みを持ち、下顎裏を局所肌補完。
 目の肌inpaintは廃止。提供閉じ目の瞼・二重線・陰影を使う。眉と頬の星は保持。口は通常口の約-7.4度の軸に局所補正し、肌や輪郭を回さない。
 再生成はprepare_character.py→build_character.py→export_webcam.py。配布0.3.0、旧0.2.0保持。詳しくはdocs/webcam-repairs-0.3.0.md。今回の変更で追加素材は要求していない。
+
+## 最新：0.4.0（新しい瞬き差分と熊の分離）
+利用者は新しい3コマを「新しく使ってほしい瞬き差分」と明言。原本2枚はrevision4_originals、登録処理はprepare_revision4.py。開・半開・閉の3画像をそのまま使う。眼球/肌の変形で中間形状を生成する処理は再導入しない。
+入力とリグのかしげは左右とも5度。口は0.3.0を維持し、98口PNG/メッシュの完全一致を検証。
+肩の熊はcompanionに独立し、耳の画素をheadに混ぜない。熊の裏の髪は提供のclean_backingからだけ補い、髪は頭に追従、熊は肩に固定。熊を前に描く。頭上の熊耳は頭固定を維持。
+再生成順はprepare_character.py→prepare_revision4.py→build_character.py→export_webcam.py。0.4.0の詳細はdocs/webcam-repairs-0.4.0.mdを読む。旧0.3.0は保存。
