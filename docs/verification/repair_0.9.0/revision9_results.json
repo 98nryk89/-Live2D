@@ -1,0 +1,96 @@
+{
+  "count": 8,
+  "passed": [
+    {
+      "name": "all 128 textures meshes and effects unchanged",
+      "detail": null
+    },
+    {
+      "name": "gravity damping lengths and support definitions unchanged",
+      "detail": null
+    },
+    {
+      "name": "only default sway sensitivity changed",
+      "detail": [
+        "AccessoryGain"
+      ]
+    },
+    {
+      "name": "initial sensitivity halved",
+      "detail": null
+    },
+    {
+      "name": "all nine swing less with identical movement",
+      "detail": {
+        "earring_red": {
+          "old": 11.230495522735989,
+          "now": 5.626462272554829,
+          "ratio": 0.5009985767025267
+        },
+        "earring_name": {
+          "old": 9.960342826163773,
+          "now": 5.018306750446154,
+          "ratio": 0.5038287173473682
+        },
+        "tassel_left_upper": {
+          "old": 7.862622095107407,
+          "now": 3.941929101295087,
+          "ratio": 0.5013504469136308
+        },
+        "tassel_left_middle": {
+          "old": 7.608954331016533,
+          "now": 3.8154989577776117,
+          "ratio": 0.501448529165751
+        },
+        "tassel_right_upper": {
+          "old": 8.194088674755845,
+          "now": 4.107667494448022,
+          "ratio": 0.5012964415558289
+        },
+        "tassel_right_middle": {
+          "old": 7.886242714965508,
+          "now": 3.9542648212277376,
+          "ratio": 0.50141302571424
+        },
+        "tassel_right_lower": {
+          "old": 7.620598489480784,
+          "now": 3.8201982738499187,
+          "ratio": 0.5012989831603372
+        },
+        "tassel_left_lower": {
+          "old": 7.377378315470423,
+          "now": 3.698215733275488,
+          "ratio": 0.5012913226261285
+        },
+        "tassel_center_lower": {
+          "old": 7.726136757024354,
+          "now": 3.873578255271087,
+          "ratio": 0.501360301673324
+        }
+      }
+    },
+    {
+      "name": "all ornaments settle downward while head stays tilted",
+      "detail": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "artist placement reference matches original canvas",
+      "detail": null
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "scope": "simulated movement and renderer; neck unchanged and unresolved; physical Mac webcam/OBS unverified"
+}

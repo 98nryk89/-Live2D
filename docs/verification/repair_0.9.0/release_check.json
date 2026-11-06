@@ -1,0 +1,9 @@
+{
+  "version": "0.9.0",
+  "model_checks": 8,
+  "camera_distribution_checks": 7,
+  "app_zip_sha256": "9886ff56b70f850cce1ffcf75655546863a76c7175783300eb51dff4ee2f451f",
+  "materials_zip_sha256": "cd2e6d65248be48105c3d40a7674b1df7b2dceb76534af331fd9bf67568b83c2",
+  "neck": "unchanged, material request prepared",
+  "physical_mac_camera_obs": "unverified"
+}

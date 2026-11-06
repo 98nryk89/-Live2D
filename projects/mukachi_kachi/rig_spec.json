@@ -73,6 +73,7 @@
     "gravity_axis": "+Y",
     "gravity": 2200,
     "damping_ratio": 0.24,
-    "limits_degrees": 65
+    "limits_degrees": 65,
+    "motion_gain_default": 0.5
   }
 }
