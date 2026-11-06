@@ -23,7 +23,10 @@ def split_accessories(original,outdir,clean=None):
    # Colour-only segmentation left the bottom gold outline attached to the hair.
    contour=[[583,382],[586,389],[590,394],[596,400],[596,404],[591,414],[586,424],[582,430],[578,424],[573,414],[568,404],[567,400],[573,394],[579,386]]
    mask=np.zeros((H,W),np.uint8);cv2.fillPoly(mask,[np.array(contour,np.int32)],255)
-  else:mask=refine_contour(original,polygon)
+  else:
+   # Include the gold outer border: colour segmentation had left it on the head.
+   contour=[[795,361],[805,370],[812,372],[817,377],[816,450],[798,467],[777,450],[777,376],[786,371]]
+   mask=np.zeros((H,W),np.uint8);cv2.fillPoly(mask,[np.array(contour,np.int32)],255)
   masks.append((name,mask,pivot,True))
  for name,box,pivot in TASSELS:
   x0,y0,x1,y1=box;roi=original[y0:y1,x0:x1];col=roi[:,:,:3]

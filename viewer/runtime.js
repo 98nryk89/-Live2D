@@ -130,7 +130,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
       this.params[id] = clamp(v, d.min, d.max);
     }
     setParams(o) { for (const k in o) this.setParam(k, o[k]); }
-    reset() { this.companionPhase=0;this.eyeFrame={left:2,right:2};for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; s.prevIn=0; s.prevInV=0; } this._sleeveState = null; }
+    reset() { this.companionPhase=0;this.eyeFrame={left:2,right:2};for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; s.prevIn=0; s.prevInV=0;s.pendulum=null; } this._sleeveState = null; }
 
     // ---- animation drivers ------------------------------------------------
     _drive(dt) {
@@ -167,7 +167,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
         P.IdleY = Math.sin(t * 0.5 + 2) * 0.5;
       } else { P.IdleX = 0; P.IdleY = 0; }
       if (this.auto.physics) this._physics(dt);
-      else for (const s of this.phys) { P[s.d.output] = 0; }
+      else for (const s of this.phys) { P[s.d.output] = 0;s.pendulum=null; }
       if (this.paramDefs.PhysSleeve) this._sleeveFlutter(dt);
     }
 
@@ -195,6 +195,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
       let pi = 0;
       for (const s of this.phys) {
         const d = s.d; pi++;
+        if(d.mode==='gravity-pendulum'){global.L2DGravity.step(s,d,P,dt);continue;}
         let inp = 0;
         for (const i of d.inputs) inp += (P[i.param] || 0) * i.gain;
         if (d.idle) inp += (P.IdleX || 0) * d.idle;
@@ -298,6 +299,10 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
               }
               pos[2 * i] = x + (X - x) * w; pos[2 * i + 1] = y + (Y - y) * w;
             }
+            break;
+          }
+          case 'gravity-pendulum': {
+            global.L2DGravity.deform(part,e.definition,P);
             break;
           }
           case 'translate': {

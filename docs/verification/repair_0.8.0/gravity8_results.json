@@ -1,0 +1,493 @@
+{
+  "count": 15,
+  "passed": [
+    {
+      "name": "other visible character parts and expressions unchanged",
+      "detail": null
+    },
+    {
+      "name": "eight other ornament cutouts unchanged",
+      "detail": null
+    },
+    {
+      "name": "neck image and deformation unchanged",
+      "detail": null
+    },
+    {
+      "name": "head changes confined to earring outer border",
+      "detail": null
+    },
+    {
+      "name": "body changes confined to earring outer border",
+      "detail": null
+    },
+    {
+      "name": "all accessories hang down at rest {}",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": -0.0,
+          "dy": 21.791778564453125,
+          "anchorError": 1.8995881685196336e-05
+        },
+        {
+          "id": "earring_name",
+          "angle": -0.0,
+          "dy": 49.88458251953125,
+          "anchorError": 9.28780429101417e-06
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": -0.0,
+          "dy": 51.90167236328125,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": -0.0,
+          "dy": 62.98052978515625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": -0.0,
+          "dy": 35.30816650390625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": -0.0,
+          "dy": 50.92095947265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": -0.0,
+          "dy": 62.51068115234375,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": -0.0,
+          "dy": 73.0767822265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": -0.0,
+          "dy": 58.0655517578125,
+          "anchorError": 0
+        }
+      ]
+    },
+    {
+      "name": "all accessories hang down at rest {'AngleZ': -5}",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": -0.0,
+          "dy": 21.791778564453125,
+          "anchorError": 1.5003250057173088e-05
+        },
+        {
+          "id": "earring_name",
+          "angle": 7.010295923947213e-05,
+          "dy": 49.88458251953125,
+          "anchorError": 2.7741670744299872e-05
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": -0.0,
+          "dy": 51.90167236328125,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": -0.0,
+          "dy": 62.98052978515625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": -0.0,
+          "dy": 35.30816650390625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": -0.0,
+          "dy": 50.92095947265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": -0.0,
+          "dy": 62.51068115234375,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": -0.0,
+          "dy": 73.0767822265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": -0.0,
+          "dy": 58.0655517578125,
+          "anchorError": 0
+        }
+      ]
+    },
+    {
+      "name": "all accessories hang down at rest {'AngleZ': 5}",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": -0.0,
+          "dy": 21.79180908203125,
+          "anchorError": 1.0452243162441416e-05
+        },
+        {
+          "id": "earring_name",
+          "angle": -0.0,
+          "dy": 49.884552001953125,
+          "anchorError": 5.073961594648335e-06
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": -0.0,
+          "dy": 51.90167236328125,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": -0.0,
+          "dy": 62.98052978515625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": -0.0,
+          "dy": 35.30816650390625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": -0.0,
+          "dy": 50.92095947265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": -0.0,
+          "dy": 62.51068115234375,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": -0.0,
+          "dy": 73.0767822265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": -0.0,
+          "dy": 58.0655517578125,
+          "anchorError": 0
+        }
+      ]
+    },
+    {
+      "name": "all accessories hang down at rest {'AngleX': 5, 'AngleY': -10, 'AngleZ': 5}",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": -0.0,
+          "dy": 20.81756591796875,
+          "anchorError": 1.7057308879113428e-05
+        },
+        {
+          "id": "earring_name",
+          "angle": -0.0,
+          "dy": 47.71942138671875,
+          "anchorError": 4.758019426839791e-06
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": -0.0,
+          "dy": 51.90167236328125,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": -0.0,
+          "dy": 62.98052978515625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": -0.0,
+          "dy": 35.30816650390625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": -0.0,
+          "dy": 50.92095947265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": -0.0,
+          "dy": 62.51068115234375,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": -0.0,
+          "dy": 73.0767822265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": -0.0,
+          "dy": 58.0655517578125,
+          "anchorError": 0
+        }
+      ]
+    },
+    {
+      "name": "all accessories hang down at rest {'AngleX': -5, 'AngleY': 5, 'AngleZ': -5}",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": -0.0,
+          "dy": 22.039794921875,
+          "anchorError": 2.9932003512307016e-05
+        },
+        {
+          "id": "earring_name",
+          "angle": 6.937274130059174e-05,
+          "dy": 50.40966796875,
+          "anchorError": 2.457421205975121e-05
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": -0.0,
+          "dy": 51.90167236328125,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": -0.0,
+          "dy": 62.98052978515625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": -0.0,
+          "dy": 35.30816650390625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": -0.0,
+          "dy": 50.92095947265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": -0.0,
+          "dy": 62.51068115234375,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": -0.0,
+          "dy": 73.0767822265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": -0.0,
+          "dy": 58.0655517578125,
+          "anchorError": 0
+        }
+      ]
+    },
+    {
+      "name": "masses lag left under rightward support acceleration",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": 25.440761687306544
+        },
+        {
+          "id": "earring_name",
+          "angle": 15.458280137827032
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": 15.020862493907108
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": 12.996842309041375
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": 19.535392209710444
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": 15.230460863655985
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": 13.07160447201276
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": 11.574326239331318
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": 13.823727519291811
+        }
+      ]
+    },
+    {
+      "name": "after motion stop all masses settle down even with head tilted",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": -0.0,
+          "dy": 21.79180908203125,
+          "anchorError": 1.0452243162441416e-05
+        },
+        {
+          "id": "earring_name",
+          "angle": -0.0,
+          "dy": 49.884552001953125,
+          "anchorError": 5.073961594648335e-06
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": -0.0,
+          "dy": 51.90167236328125,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": -5.5525999336221015e-05,
+          "dy": 62.98052978515625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": -0.0,
+          "dy": 35.30816650390625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": -0.0,
+          "dy": 50.92095947265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": -0.0,
+          "dy": 62.51068115234375,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": -0.0,
+          "dy": 73.0767822265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": -0.0,
+          "dy": 58.0655517578125,
+          "anchorError": 0
+        }
+      ]
+    },
+    {
+      "name": "gravity restores and damping dissipates pendulum energy",
+      "detail": {
+        "initial": 4491.78316679996,
+        "final": 8.427754500447895e-15,
+        "firstAngle": -8.069511390502221,
+        "finalAngle": -8.086868648757664e-08
+      }
+    },
+    {
+      "name": "zero sway gain still hangs down",
+      "detail": [
+        {
+          "id": "earring_red",
+          "angle": -0.0,
+          "dy": 21.79180908203125,
+          "anchorError": 1.0452243162441416e-05
+        },
+        {
+          "id": "earring_name",
+          "angle": -0.0,
+          "dy": 49.884552001953125,
+          "anchorError": 5.073961594648335e-06
+        },
+        {
+          "id": "tassel_left_upper",
+          "angle": -0.0,
+          "dy": 51.90167236328125,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_middle",
+          "angle": -0.0,
+          "dy": 62.98052978515625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_upper",
+          "angle": -0.0,
+          "dy": 35.30816650390625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_middle",
+          "angle": -0.0,
+          "dy": 50.92095947265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_right_lower",
+          "angle": -0.0,
+          "dy": 62.51068115234375,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_left_lower",
+          "angle": -0.0,
+          "dy": 73.0767822265625,
+          "anchorError": 0
+        },
+        {
+          "id": "tassel_center_lower",
+          "angle": -0.0,
+          "dy": 58.0655517578125,
+          "anchorError": 0
+        }
+      ]
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "scope": "2D pendulum and renderer, simulated movement; physical Mac camera/OBS unverified"
+}

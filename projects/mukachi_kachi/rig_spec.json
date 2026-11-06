@@ -1,5 +1,22 @@
 {
   "method": "continuous head and throat, fixed collar and body",
+  "neck_connection": {
+    "mesh": "head",
+    "weight": {
+      "mode": "neck",
+      "from": 490,
+      "to": 438,
+      "left": 616,
+      "right": 755,
+      "smooth": true
+    },
+    "step": 4
+  },
+  "companion_blink": {
+    "period_seconds": 4,
+    "closed_eyes_source": "smile",
+    "independent": true
+  },
   "head": {
     "type": "head3d",
     "yaw": "AngleX",
@@ -51,21 +68,11 @@
     "Input closed-mouth misclassification remains an unverified baseline issue",
     "Source silhouette colour fringe retained; local hidden ornament backing reconstructed"
   ],
-  "neck_connection": {
-    "mesh": "head",
-    "weight": {
-      "mode": "neck",
-      "from": 490,
-      "to": 438,
-      "left": 616,
-      "right": 755,
-      "smooth": true
-    },
-    "step": 4
-  },
-  "companion_blink": {
-    "period_seconds": 4,
-    "closed_eyes_source": "smile",
-    "independent": true
+  "accessory_physics": {
+    "mode": "gravity-pendulum",
+    "gravity_axis": "+Y",
+    "gravity": 2200,
+    "damping_ratio": 0.24,
+    "limits_degrees": 65
   }
 }

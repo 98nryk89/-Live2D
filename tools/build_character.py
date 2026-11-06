@@ -1,4 +1,4 @@
-"""Build separate head/neck/body meshes with source-pixel expression replacements.
+"""Build a continuous head/throat and source-pixel expression replacements.
 No generative repaint; only reference registration and geometric resampling.
 """
 from pathlib import Path
@@ -65,9 +65,12 @@ for i,(name,sprite,x,y,pivot,is_head) in enumerate(accessories):
  es=parts[-1]['effects']
  if not is_head:es.pop(0)
  output='Phys_'+name
- limit=10 if is_head else 7
- es.insert(0,{'type':'rotate','param':output,'pivot':list(pivot),'map':[[-1,-limit],[0,0],[1,limit]],'gainParam':'AccessoryGain'})
- physics.append({'output':output,'inputs':[{'param':'AngleZ','gain':1.5 if is_head else .35},{'param':'BodyX','gain':18},{'param':'BodyY','gain':10},{'param':'AngleX','gain':.8 if is_head else .25},{'param':'AngleY','gain':.5 if is_head else .2}],'freq':1.6+i*.07,'damp':.60,'inertia':2.5,'drag':1.8,'driveGain':28,'sway':0})
+ # The support is the actual attachment; alpha centroid approximates the mass centre.
+ alpha=sprite[:,:,3].astype(float)/255;yy,xx=np.mgrid[:sprite.shape[0],:sprite.shape[1]]
+ com=[float(x+(xx*alpha).sum()/alpha.sum()),float(y+(yy*alpha).sum()/alpha.sum())]
+ definition={'mode':'gravity-pendulum','part':name,'output':output,'pivot':list(pivot),'com':com,'length':max(12,float(np.linalg.norm(np.array(com)-pivot))),'parentHead':copy.deepcopy(head) if is_head else None,'bodyScale':[135,70],'gravity':2200,'dampingRatio':.24,'accelerationFilter':.045,'limitDegrees':65}
+ es.append({'type':'gravity-pendulum','definition':definition})
+ physics.append(definition)
 
 # Pair of complete authored closed eyes. Separate opaque cores cover both original pupils.
 for side,box in [('left',(427,403,466,441)),('right',(482,383,526,425))]:
@@ -89,8 +92,8 @@ param('MouthOpen',0,1,0,'口 開き');param('MouthForm',0,2,0,'口 0あ/1い/2�
 for id,label in [('Smile','笑顔'),('Surprise','驚き')]:param(id,0,1,0,label,1)
 param('CompanionEyeOpen',0,1,1,'熊の目');params[-1]['hidden']=True
 param('AccessoryGain',0,2,1,'アクセサリーの揺れ量')
-for d in physics:params.append({'id':d['output'],'min':-1,'max':1,'default':0,'hidden':True})
+for d in physics:params.append({'id':d['output'],'min':-65,'max':65,'default':0,'hidden':True})
 rig={'version':1,'name':'無価値価値','modelId':'mukachi_kachi','size':[W,H],'view':[-210,-115,1770,1400],'params':params,'parts':parts,'physics':physics,'eyeMode':'authored-three-poses'}
 (OUT/'rig.json').write_text(json.dumps(rig,ensure_ascii=False,separators=(',',':')))
-(P/'rig_spec.json').write_text(json.dumps({'method':'continuous head and throat, fixed collar and body','neck_connection':{'mesh':'head','weight':neck_weight,'step':4},'companion_blink':{'period_seconds':4,'closed_eyes_source':'smile','independent':True},'head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'approved sheet, open/half/closed source pixels only','mouth':'neutral lip erased only','accessories':'supplied clean backing beneath isolated ornaments'},'mouth_steps':32,'eyes':'three approved drawings, no local warps or synthetic intermediate frames','accessories':[a[0] for a in accessories],'limitations':['Continuous head/throat; fixed collar; local skin backing; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
+(P/'rig_spec.json').write_text(json.dumps({'method':'continuous head and throat, fixed collar and body','neck_connection':{'mesh':'head','weight':neck_weight,'step':4},'companion_blink':{'period_seconds':4,'closed_eyes_source':'smile','independent':True},'head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'approved sheet, open/half/closed source pixels only','mouth':'neutral lip erased only','accessories':'supplied clean backing beneath isolated ornaments'},'mouth_steps':32,'eyes':'three approved drawings, no local warps or synthetic intermediate frames','accessory_physics':{'mode':'gravity-pendulum','gravity_axis':'+Y','gravity':2200,'damping_ratio':.24,'limits_degrees':65},'accessories':[a[0] for a in accessories],'limitations':['Continuous head/throat; fixed collar; local skin backing; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
 print('built',len(parts),'mesh layers; source SHA',hashlib.sha256((ROOT/'character_materials/mukachi_kachi/base.png').read_bytes()).hexdigest())
