@@ -1,5 +1,5 @@
 {
-  "method": "separate head, neck and body following V completed rig",
+  "method": "continuous head and throat, fixed collar and body",
   "head": {
     "type": "head3d",
     "yaw": "AngleX",
@@ -47,8 +47,25 @@
     "tassel_center_lower"
   ],
   "limitations": [
-    "Separate head/neck/body; local skin backing under jaw; long hidden hair not reconstructed",
+    "Continuous head/throat; fixed collar; local skin backing; long hidden hair not reconstructed",
     "Input closed-mouth misclassification remains an unverified baseline issue",
     "Source silhouette colour fringe retained; local hidden ornament backing reconstructed"
-  ]
+  ],
+  "neck_connection": {
+    "mesh": "head",
+    "weight": {
+      "mode": "neck",
+      "from": 490,
+      "to": 438,
+      "left": 616,
+      "right": 755,
+      "smooth": true
+    },
+    "step": 4
+  },
+  "companion_blink": {
+    "period_seconds": 4,
+    "closed_eyes_source": "smile",
+    "independent": true
+  }
 }

@@ -13,7 +13,7 @@ from character_head import split_head
 from character_segmentation import segmentation_masks
 ROOT=Path(__file__).resolve().parents[1];P=ROOT/'projects/mukachi_kachi';OUT=P/'out';OUT.mkdir(exist_ok=True)
 images={p.stem:cv2.imread(str(p),-1) for p in (P/'aligned').glob('*.png')};base=images['base'];H,W=base.shape[:2]
-neck_weight={'mode':'y','from':482,'to':432,'smooth':True}
+neck_weight={'mode':'neck','from':490,'to':438,'left':616,'right':755,'smooth':True}
 head={'type':'head3d','yaw':'AngleX','pitch':'AngleY','roll':'AngleZ','center':[680,300],'pivot':[680,485],'Rx':245,'Ry':255,'Rz':155,'k':.65,'restRoll':6.530486248611499,'restRollPivot':[687,435]}
 effects=[head,{'type':'translate','param':'BodyX','map':[[-1,-135,0],[0,0,0],[1,135,0]]},{'type':'translate','param':'BodyY','map':[[-1,0,-70],[0,0,0],[1,0,70]]}]
 parts=[]
@@ -22,19 +22,19 @@ for name,mask in segmentation.items():cv2.imwrite(str(P/(name+'_foreground_mask.
 backed,accessories=split_accessories(base,P,clean=images['clean_backing'])
 def part(pid,im,x,y,selector=None):
  tex=pid+'.png';cv2.imwrite(str(OUT/tex),im)
- mesh=make_mesh(im[:,:,3]/255,x,y,4 if pid=="neck" else 12)
+ mesh=make_mesh(im[:,:,3]/255,x,y,4 if pid=="head" else 12)
  es=copy.deepcopy(effects)
  if selector:es.insert(0,{'type':'feature','group':selector[0],'index':selector[1]})
  parts.append({'id':pid,'z':len(parts),'tex':tex,'mesh':mesh,'effects':es})
 for name,sprite in split_head(backed,clean=images['clean_backing'],segmentation=segmentation):
  part(name,sprite,0,0)
  if name in ['body','neck_backing','collar','companion']:parts[-1]['effects']=copy.deepcopy(effects[1:])
- elif name=='neck':parts[-1]['effects'][0]['weight']=neck_weight
+ elif name=='head':parts[-1]['effects'][0]['weight']=neck_weight
  if name=='companion':parts[-1]['z']=900
  if name=='collar':parts[-1]['z']=850
 
 
-def patch(role,box,feather=7,warp=None):
+def patch(role,box,feather=7,warp=None,opaque_core=False):
  x0,y0,x1,y1=box;im=images[role][y0:y1,x0:x1].copy();h,w=im.shape[:2]
  if warp:
   cy,inner,amount=warp;cy-=y0
@@ -45,7 +45,7 @@ def patch(role,box,feather=7,warp=None):
  yy,xx=np.mgrid[:h,:w];rx=(w-1)/2;ry=(h-1)/2
  radius=np.sqrt(((xx-rx)/rx)**2+((yy-ry)/ry)**2)
  a=np.clip((1-radius)*min(rx,ry)/feather,0,1)
- im[:,:,3]=np.rint(im[:,:,3]*a).astype(np.uint8)
+ im[:,:,3]=np.rint((255 if opaque_core else im[:,:,3])*a).astype(np.uint8)
  return im
 # Approved drawings only: closed, half-open, open. No generated intermediate poses.
 for eye in ['left','right']:
@@ -65,14 +65,19 @@ for i,(name,sprite,x,y,pivot,is_head) in enumerate(accessories):
  es=parts[-1]['effects']
  if not is_head:es.pop(0)
  output='Phys_'+name
- limit=8 if is_head else 6
+ limit=10 if is_head else 7
  es.insert(0,{'type':'rotate','param':output,'pivot':list(pivot),'map':[[-1,-limit],[0,0],[1,limit]],'gainParam':'AccessoryGain'})
- physics.append({'output':output,'inputs':[{'param':'AngleZ','gain':1.5 if is_head else .35},{'param':'BodyX','gain':18},{'param':'BodyY','gain':10},{'param':'AngleX','gain':.8 if is_head else .25},{'param':'AngleY','gain':.5 if is_head else .2}],'freq':1.6+i*.07,'damp':.65,'inertia':2.5,'drag':1.8,'driveGain':18,'sway':0})
+ physics.append({'output':output,'inputs':[{'param':'AngleZ','gain':1.5 if is_head else .35},{'param':'BodyX','gain':18},{'param':'BodyY','gain':10},{'param':'AngleX','gain':.8 if is_head else .25},{'param':'AngleY','gain':.5 if is_head else .2}],'freq':1.6+i*.07,'damp':.60,'inertia':2.5,'drag':1.8,'driveGain':28,'sway':0})
 
-# Only the small companion's eyes change on smiling; no shoulder/costume replacement.
-box=(408,389,520,447)
-part('companion_smile',patch('smile',box),box[0],box[1],('companion',1))
-parts[-1]['effects'].pop(1);parts[-1]['z']=901
+# Pair of complete authored closed eyes. Separate opaque cores cover both original pupils.
+for side,box in [('left',(427,403,466,441)),('right',(482,383,526,425))]:
+ sprite=patch('smile',box,feather=2,opaque_core=True)
+ if side=='right':
+  yy,xx=np.mgrid[box[1]:box[3],box[0]:box[2]]
+  # The muzzle rises diagonally beside this eye; keep the replacement off the nose.
+  sprite[:,:,3]=np.rint(sprite[:,:,3]*np.clip((xx-(491+.8*(yy-414)))/2,0,1)).astype(np.uint8)
+ part('companion_eye_'+side+'_closed',sprite,box[0],box[1],('companion',1))
+ parts[-1]['effects'].pop(1);parts[-1]['z']=901
 params=[]
 def param(id,lo,hi,default,label,step=None):
  p={'id':id,'min':lo,'max':hi,'default':default,'label':label}
@@ -82,9 +87,10 @@ for id,lo,hi,label in [('AngleX',-5,5,'顔 左右'),('AngleY',-10,5,'顔 下・�
 for id,label in [('EyeLOpen','左目'),('EyeROpen','右目')]:param(id,0,1,1,label)
 param('MouthOpen',0,1,0,'口 開き');param('MouthForm',0,2,0,'口 0あ/1い/2え',1)
 for id,label in [('Smile','笑顔'),('Surprise','驚き')]:param(id,0,1,0,label,1)
+param('CompanionEyeOpen',0,1,1,'熊の目');params[-1]['hidden']=True
 param('AccessoryGain',0,2,1,'アクセサリーの揺れ量')
 for d in physics:params.append({'id':d['output'],'min':-1,'max':1,'default':0,'hidden':True})
 rig={'version':1,'name':'無価値価値','modelId':'mukachi_kachi','size':[W,H],'view':[-210,-115,1770,1400],'params':params,'parts':parts,'physics':physics,'eyeMode':'authored-three-poses'}
 (OUT/'rig.json').write_text(json.dumps(rig,ensure_ascii=False,separators=(',',':')))
-(P/'rig_spec.json').write_text(json.dumps({'method':'separate head, neck and body following V completed rig','head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'approved sheet, open/half/closed source pixels only','mouth':'neutral lip erased only','accessories':'supplied clean backing beneath isolated ornaments'},'mouth_steps':32,'eyes':'three approved drawings, no local warps or synthetic intermediate frames','accessories':[a[0] for a in accessories],'limitations':['Separate head/neck/body; local skin backing under jaw; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
+(P/'rig_spec.json').write_text(json.dumps({'method':'continuous head and throat, fixed collar and body','neck_connection':{'mesh':'head','weight':neck_weight,'step':4},'companion_blink':{'period_seconds':4,'closed_eyes_source':'smile','independent':True},'head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'approved sheet, open/half/closed source pixels only','mouth':'neutral lip erased only','accessories':'supplied clean backing beneath isolated ornaments'},'mouth_steps':32,'eyes':'three approved drawings, no local warps or synthetic intermediate frames','accessories':[a[0] for a in accessories],'limitations':['Continuous head/throat; fixed collar; local skin backing; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
 print('built',len(parts),'mesh layers; source SHA',hashlib.sha256((ROOT/'character_materials/mukachi_kachi/base.png').read_bytes()).hexdigest())

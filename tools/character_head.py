@@ -21,6 +21,7 @@ def split_head(original,clean=None,segmentation=None):
  # Exact front collar contour, fixed to the torso and drawn in front of the throat.
  collar=np.zeros((h,w),np.uint8)
  cv2.fillPoly(collar,[np.array([[618,430],[607,438],[598,461],[581,508],[580,570],[801,570],[783,491],[770,457],[764,438],[752,430],[753,444],[747,452],[731,461],[710,471],[700,477],[695,486],[693,493],[680,493],[676,480],[667,474],[649,466],[631,457],[619,451]],np.int32)],255)
+ collar=cv2.dilate(collar,np.ones((5,5),np.uint8))
  # Overlap the original under-jaw skin: shared transforms at the top eliminate the old y=435 tear.
  neck=np.zeros((h,w),np.uint8);cv2.fillPoly(neck,[np.array([[625,405],[743,405],[744,436],[744,442],[739,447],[728,456],[707,466],[697,473],[692,481],[690,488],[683,488],[680,478],[670,470],[651,462],[631,452],[623,446]],np.int32)],255)
  neck[(collar>0)|(guard>0)]=0
@@ -38,6 +39,12 @@ def split_head(original,clean=None,segmentation=None):
  backing=original[idx[0],idx[1]].copy();cover=np.zeros((h,w),np.uint8)
  cv2.fillPoly(cover,[np.array([[626,423],[742,423],[753,444],[747,452],[731,461],[710,471],[700,477],[695,486],[693,493],[680,493],[676,480],[667,474],[649,466],[631,457],[619,451],[619,438]],np.int32)],255)
  backing[:,:,3]=cover
+ # One continuous head/throat texture and mesh: there is no internal y=435 cut.
+ extended=cv2.dilate(cover,np.ones((9,9),np.uint8));extended[(collar>0)|(guard>0)]=0
+ hidden=(extended>0)&(head==0)&(neck==0)
+ face[hidden,:3]=backing[hidden,:3]
+ face[:,:,3]=np.maximum(face[:,:,3],np.where(extended>0,255,neckSprite[:,:,3]).astype(np.uint8))
+ body[:,:,3]=np.where(cover>0,0,body[:,:,3])
  parts=[('neck_backing',backing),('body',body),('collar',collarSprite)]
  if clean is not None:
   region=np.zeros((h,w),np.uint8);region[300:435,450:625]=255
@@ -46,7 +53,7 @@ def split_head(original,clean=None,segmentation=None):
   hair=clean.copy();hair[:,:,3]=np.where(cv2.dilate(ears,np.ones((3,3),np.uint8))>0,hair[:,:,3],0)
   parts.append(('hair_behind_head_ears',hair))
  companion=original.copy();companion[:,:,3]=np.where(bear>0,companion[:,:,3],0)
- parts.extend([('companion',companion),('neck',neckSprite),('head',face)])
+ parts.extend([('companion',companion),('head',face)])
  for name in ['head_ear_left','head_ear_right']:
   sprite=original.copy();sprite[:,:,3]=np.where(masks[name]>0,sprite[:,:,3],0);parts.append((name,sprite))
  return parts

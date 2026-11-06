@@ -32,7 +32,8 @@
   function weightOf(w, x, y) {
     if (!w) return 1;
     let t;
-    if (w.mode === 'y') t = (y - w.from) / (w.to - w.from);
+    if (w.mode === 'neck') {if(x<w.left||x>w.right)return 1;t=(y-w.from)/(w.to-w.from);}
+    else if (w.mode === 'y') t = (y - w.from) / (w.to - w.from);
     else if (w.mode === 'x') t = (x - w.from) / (w.to - w.from);
     else if (w.mode === 'dist') t = Math.hypot(x - w.pivot[0], y - w.pivot[1]) / w.len;
     else t = 1;
@@ -76,9 +77,10 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
       this.parts = rig.parts.slice().sort((a, b) => a.z - b.z);
       this.byId = {}; for (const p of this.parts) this.byId[p.id] = p;
       this.phys = (rig.physics || []).map(d => ({ d, a: 0, av: 0, prevIn: 0, prevInV: 0 }));
-      this.time = 0; this.auto = { blink: true, owlBlink: true, breath: true, idle: true, physics: true };
+      this.time = 0; this.auto = { blink: true, owlBlink: true, companionBlink:true, breath: true, idle: true, physics: true };
       this.blink = { next: 2.5, t: -1 };
       this.owlBlink = { next: 4.3, t: -1 };
+      this.companionPhase=0;
       this.eyeFrame={left:2,right:2};
       this.wire = false;
     }
@@ -128,7 +130,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
       this.params[id] = clamp(v, d.min, d.max);
     }
     setParams(o) { for (const k in o) this.setParam(k, o[k]); }
-    reset() { this.eyeFrame={left:2,right:2};for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; s.prevIn=0; s.prevInV=0; } this._sleeveState = null; }
+    reset() { this.companionPhase=0;this.eyeFrame={left:2,right:2};for (const p of this.rig.params) this.params[p.id] = p.default; for (const s of this.phys) { s.a = 0; s.av = 0; s.prevIn=0; s.prevInV=0; } this._sleeveState = null; }
 
     // ---- animation drivers ------------------------------------------------
     _drive(dt) {
@@ -154,6 +156,11 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
           P.OwlEyeOpen = b.t < .045 ? 1 - b.t / .045 : (b.t < .10 ? 0 : Math.min(1, (b.t - .10) / .08));
           if (b.t >= .18) { b.t = -1; b.next = 3.8 + Math.random() * 3; P.OwlEyeOpen = 1; }
         }
+      }
+      if(this.auto.companionBlink && this.paramDefs.CompanionEyeOpen){
+        this.companionPhase=(this.companionPhase+dt)%4;
+        const age=this.companionPhase-3.82;
+        P.CompanionEyeOpen=age<0?1:age<.045?1-age/.045:age<.10?0:Math.min(1,(age-.10)/.08);
       }
       if (this.auto.idle && this.paramDefs.AngleZ) {
         P.IdleX = Math.sin(t * 0.6) * 0.5 + Math.sin(t * 0.37 + 1) * 0.3;
@@ -220,7 +227,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
             const surprise=P.Surprise>.5, smile=!surprise&&P.Smile>.5;
             let selected=-1;
             if(e.group==='mouth')selected=surprise?98:smile?97:P.MouthOpen<=.015?-1:Math.round(P.MouthForm||0)*32+Math.max(1,Math.min(32,Math.round(P.MouthOpen*32)));
-            else if(e.group==='companion')selected=smile?1:-1;
+            else if(e.group==='companion')selected=smile||(P.CompanionEyeOpen??1)<.5?1:-1;
             else {
               const open=P[e.group==='left'?'EyeROpen':'EyeLOpen'];
               if(this.rig.eyeMode==='authored-three-poses'){

@@ -1,0 +1,150 @@
+{
+  "count": 26,
+  "passed": [
+    {
+      "name": "accepted features and cutouts unchanged",
+      "detail": {
+        "layers": 122
+      }
+    },
+    {
+      "name": "head and throat use one connected mesh",
+      "detail": null
+    },
+    {
+      "name": "old single clipped bear eye patch removed",
+      "detail": null
+    },
+    {
+      "name": "authored left closed eye RGB unchanged",
+      "detail": null
+    },
+    {
+      "name": "left pupil replacement opaque",
+      "detail": null
+    },
+    {
+      "name": "authored right closed eye RGB unchanged",
+      "detail": null
+    },
+    {
+      "name": "right pupil replacement opaque",
+      "detail": null
+    },
+    {
+      "name": "bear blink enabled initially",
+      "detail": null
+    },
+    {
+      "name": "normal selects complete eye pair",
+      "detail": []
+    },
+    {
+      "name": "smile selects complete eye pair",
+      "detail": [
+        "companion_eye_left_closed",
+        "companion_eye_right_closed"
+      ]
+    },
+    {
+      "name": "blink selects complete eye pair",
+      "detail": [
+        "companion_eye_left_closed",
+        "companion_eye_right_closed"
+      ]
+    },
+    {
+      "name": "disabling bear blinking reopens eyes",
+      "detail": null
+    },
+    {
+      "name": "bear blinks every four seconds independently",
+      "detail": {
+        "onsets": [
+          3.845,
+          7.845,
+          11.845
+        ],
+        "paired": true
+      }
+    },
+    {
+      "name": "continuous head/throat remains unfolded and collar fixed {'AngleZ': -5}",
+      "detail": {
+        "folds": 0,
+        "collarDelta": 0
+      }
+    },
+    {
+      "name": "no holes within throat {'AngleZ': -5}",
+      "detail": null
+    },
+    {
+      "name": "continuous head/throat remains unfolded and collar fixed {'AngleZ': 0}",
+      "detail": {
+        "folds": 0,
+        "collarDelta": 0
+      }
+    },
+    {
+      "name": "no holes within throat {'AngleZ': 0}",
+      "detail": null
+    },
+    {
+      "name": "continuous head/throat remains unfolded and collar fixed {'AngleZ': 5}",
+      "detail": {
+        "folds": 0,
+        "collarDelta": 0
+      }
+    },
+    {
+      "name": "no holes within throat {'AngleZ': 5}",
+      "detail": null
+    },
+    {
+      "name": "continuous head/throat remains unfolded and collar fixed {'AngleX': -5, 'AngleY': -10, 'AngleZ': -5}",
+      "detail": {
+        "folds": 0,
+        "collarDelta": 0
+      }
+    },
+    {
+      "name": "no holes within throat {'AngleX': -5, 'AngleY': -10, 'AngleZ': -5}",
+      "detail": null
+    },
+    {
+      "name": "continuous head/throat remains unfolded and collar fixed {'AngleX': 5, 'AngleY': 5, 'AngleZ': 5}",
+      "detail": {
+        "folds": 0,
+        "collarDelta": 0
+      }
+    },
+    {
+      "name": "no holes within throat {'AngleX': 5, 'AngleY': 5, 'AngleZ': 5}",
+      "detail": null
+    },
+    {
+      "name": "motion stops and ornaments settle",
+      "detail": null
+    },
+    {
+      "name": "all nine ornaments more sensitive than previous release",
+      "detail": {
+        "Phys_earring_red": 1.454388803777351,
+        "Phys_earring_name": 1.5193952457295496,
+        "Phys_tassel_left_upper": 1.8945505862996643,
+        "Phys_tassel_left_middle": 1.890979780667717,
+        "Phys_tassel_right_upper": 1.8931129046171227,
+        "Phys_tassel_right_middle": 1.8951630167712166,
+        "Phys_tassel_right_lower": 1.8971265630515453,
+        "Phys_tassel_left_lower": 1.8931830814383976,
+        "Phys_tassel_center_lower": 1.8900256940660276
+      }
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "scope": "actual browser rendering and simulated movement; physical Mac webcam and OBS unverified"
+}
