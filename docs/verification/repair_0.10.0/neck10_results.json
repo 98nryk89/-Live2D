@@ -1,0 +1,154 @@
+{
+  "count": 22,
+  "passed": [
+    {
+      "name": "approved features textures meshes and effects unchanged",
+      "detail": {
+        "parts": 124
+      }
+    },
+    {
+      "name": "gravity and restrained amplitude unchanged",
+      "detail": null
+    },
+    {
+      "name": "rigid head no longer stretches throat",
+      "detail": null
+    },
+    {
+      "name": "shadow independent and clipped to supplied skin",
+      "detail": null
+    },
+    {
+      "name": "original supplied skin preserved",
+      "detail": null
+    },
+    {
+      "name": "jaw attachment fixed base and unfolded surface {'AngleZ': -5}",
+      "detail": {
+        "topError": 0,
+        "baseError": 0,
+        "folds": {
+          "head": 0,
+          "neck_skin": 0
+        },
+        "collar": 0
+      }
+    },
+    {
+      "name": "no interior neck transparency {'AngleZ': -5}",
+      "detail": null
+    },
+    {
+      "name": "jaw attachment fixed base and unfolded surface {'AngleZ': -2.5}",
+      "detail": {
+        "topError": 0,
+        "baseError": 0,
+        "folds": {
+          "head": 0,
+          "neck_skin": 0
+        },
+        "collar": 0
+      }
+    },
+    {
+      "name": "no interior neck transparency {'AngleZ': -2.5}",
+      "detail": null
+    },
+    {
+      "name": "jaw attachment fixed base and unfolded surface {'AngleZ': 0}",
+      "detail": {
+        "topError": 0,
+        "baseError": 0,
+        "folds": {
+          "head": 0,
+          "neck_skin": 0
+        },
+        "collar": 0
+      }
+    },
+    {
+      "name": "no interior neck transparency {'AngleZ': 0}",
+      "detail": null
+    },
+    {
+      "name": "jaw attachment fixed base and unfolded surface {'AngleZ': 2.5}",
+      "detail": {
+        "topError": 0,
+        "baseError": 0,
+        "folds": {
+          "head": 0,
+          "neck_skin": 0
+        },
+        "collar": 0
+      }
+    },
+    {
+      "name": "no interior neck transparency {'AngleZ': 2.5}",
+      "detail": null
+    },
+    {
+      "name": "jaw attachment fixed base and unfolded surface {'AngleZ': 5}",
+      "detail": {
+        "topError": 0,
+        "baseError": 0,
+        "folds": {
+          "head": 0,
+          "neck_skin": 0
+        },
+        "collar": 0
+      }
+    },
+    {
+      "name": "no interior neck transparency {'AngleZ': 5}",
+      "detail": null
+    },
+    {
+      "name": "jaw attachment fixed base and unfolded surface {'AngleX': 5, 'AngleY': -10, 'AngleZ': 5}",
+      "detail": {
+        "topError": 0,
+        "baseError": 0,
+        "folds": {
+          "head": 0,
+          "neck_skin": 0
+        },
+        "collar": 0
+      }
+    },
+    {
+      "name": "no interior neck transparency {'AngleX': 5, 'AngleY': -10, 'AngleZ': 5}",
+      "detail": null
+    },
+    {
+      "name": "jaw attachment fixed base and unfolded surface {'AngleX': -5, 'AngleY': 5, 'AngleZ': -5}",
+      "detail": {
+        "topError": 0,
+        "baseError": 0,
+        "folds": {
+          "head": 0,
+          "neck_skin": 0
+        },
+        "collar": 0
+      }
+    },
+    {
+      "name": "no interior neck transparency {'AngleX': -5, 'AngleY': 5, 'AngleZ': -5}",
+      "detail": null
+    },
+    {
+      "name": "rendered face unchanged",
+      "detail": {
+        "mean_rgba_error": 0.003207417582417582
+      }
+    },
+    {
+      "name": "jaw shadow never floats outside skin",
+      "detail": null
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "scope": "geometry, image fidelity and actual renderer; appearance still requires user review; physical Mac camera/OBS unverified"
+}

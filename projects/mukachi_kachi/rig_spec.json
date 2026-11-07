@@ -1,15 +1,50 @@
 {
-  "method": "continuous head and throat, fixed collar and body",
+  "method": "rigid jaw and supplied neck surface, independent shadow and fixed collar",
   "neck_connection": {
-    "mesh": "head",
-    "weight": {
-      "mode": "neck",
-      "from": 490,
-      "to": 438,
-      "left": 616,
-      "right": 755,
-      "smooth": true
+    "mesh": "neck_skin",
+    "definition": {
+      "head": {
+        "type": "head3d",
+        "yaw": "AngleX",
+        "pitch": "AngleY",
+        "roll": "AngleZ",
+        "center": [
+          680,
+          300
+        ],
+        "pivot": [
+          680,
+          485
+        ],
+        "Rx": 245,
+        "Ry": 255,
+        "Rz": 155,
+        "k": 0.65,
+        "restRoll": 6.530486248611499,
+        "restRollPivot": [
+          687,
+          435
+        ]
+      },
+      "left": [
+        628,
+        405
+      ],
+      "right": [
+        748,
+        405
+      ],
+      "base": [
+        687,
+        490
+      ],
+      "restTop": 405,
+      "restBottom": 490,
+      "sourceCenterX": 684,
+      "sourceHalf": 62,
+      "bottomHalf": 64
     },
+    "shadow_clip": "neck_skin",
     "step": 4
   },
   "companion_blink": {
@@ -52,6 +87,14 @@
   },
   "mouth_steps": 32,
   "eyes": "three approved drawings, no local warps or synthetic intermediate frames",
+  "accessory_physics": {
+    "mode": "gravity-pendulum",
+    "gravity_axis": "+Y",
+    "gravity": 2200,
+    "damping_ratio": 0.24,
+    "limits_degrees": 65,
+    "motion_gain_default": 0.5
+  },
   "accessories": [
     "earring_red",
     "earring_name",
@@ -64,16 +107,8 @@
     "tassel_center_lower"
   ],
   "limitations": [
-    "Continuous head/throat; fixed collar; local skin backing; long hidden hair not reconstructed",
+    "Supplied curved neck surface with independent shadow; appearance requires review; long hidden hair not reconstructed",
     "Input closed-mouth misclassification remains an unverified baseline issue",
     "Source silhouette colour fringe retained; local hidden ornament backing reconstructed"
-  ],
-  "accessory_physics": {
-    "mode": "gravity-pendulum",
-    "gravity_axis": "+Y",
-    "gravity": 2200,
-    "damping_ratio": 0.24,
-    "limits_degrees": 65,
-    "motion_gain_default": 0.5
-  }
+  ]
 }

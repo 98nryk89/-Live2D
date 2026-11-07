@@ -301,6 +301,10 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
             }
             break;
           }
+          case 'neck-tube': {
+            global.L2DNeck.deform(part,e.definition,P);
+            break;
+          }
           case 'gravity-pendulum': {
             global.L2DGravity.deform(part,e.definition,P);
             break;

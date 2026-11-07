@@ -1,0 +1,21 @@
+{
+  "source": "character_materials/mukachi_kachi/neck_skin_originals/透明背景の淡いアニメ調ネックレイヤー.png",
+  "sha256": "28c89f5155de4e3490d2a563c82960d047c667a6606dae9aef903383de1ba218",
+  "source_size": [
+    1350,
+    1165
+  ],
+  "translation": [
+    0,
+    -20
+  ],
+  "alpha_cleanup": "largest neck component at alpha>16, with one-pixel boundary margin; original unchanged",
+  "bgr_color_offset": [
+    -1.0,
+    1.0,
+    4.0
+  ],
+  "shadow_source": "character_materials/mukachi_kachi/neck_pose_originals/無価値価値の自然な首元修正版.png",
+  "shadow_alignment": "torso registration then inverse head registration",
+  "no_new_illustration_generated": true
+}

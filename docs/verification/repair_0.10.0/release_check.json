@@ -1,0 +1,9 @@
+{
+  "version": "0.10.0",
+  "model_checks": 22,
+  "camera_distribution_checks": 7,
+  "zip_sha256": "bec4df4b135d686bee142a827737dce939384f82acf86a3fd973fa5e759e367b",
+  "source_skin_sha256": "28c89f5155de4e3490d2a563c82960d047c667a6606dae9aef903383de1ba218",
+  "appearance": "comparison reviewed; user appearance confirmation pending",
+  "physical_mac_camera_obs": "unverified"
+}
