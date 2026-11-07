@@ -1,0 +1,173 @@
+{
+  "count": 20,
+  "passed": [
+    {
+      "name": "all original textures and meshes unchanged",
+      "detail": null
+    },
+    {
+      "name": "neck definition otherwise identical to 0.11",
+      "detail": null
+    },
+    {
+      "name": "only AngleZ parameter changed",
+      "detail": null
+    },
+    {
+      "name": "face left8 right5",
+      "detail": null
+    },
+    {
+      "name": "accepted pose pixels identical -5",
+      "detail": null
+    },
+    {
+      "name": "accepted pose pixels identical 0",
+      "detail": null
+    },
+    {
+      "name": "accepted pose pixels identical 5",
+      "detail": null
+    },
+    {
+      "name": "neck at left8 exactly equals neck at left5",
+      "detail": null
+    },
+    {
+      "name": "left face adds exactly3 degrees, right stays5",
+      "detail": [
+        {
+          "angle": 6.53048813746109,
+          "jaw": [
+            687,
+            435
+          ]
+        },
+        {
+          "angle": 1.5304799887082638,
+          "jaw": [
+            684.2037353515625,
+            435.1221008300781
+          ]
+        },
+        {
+          "angle": -1.4695081129676708,
+          "jaw": [
+            684.2037353515625,
+            435.1221008300781
+          ]
+        },
+        {
+          "angle": 11.530492911036273,
+          "jaw": [
+            689.7962646484375,
+            435.1221008300781
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extra face rotation keeps transformed jaw pivot fixed",
+      "detail": null
+    },
+    {
+      "name": "no head/neck folds (0, 0, -8)",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "interior neck remains opaque (0, 0, -8)",
+      "detail": null
+    },
+    {
+      "name": "no head/neck folds (5, -10, -8)",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "interior neck remains opaque (5, -10, -8)",
+      "detail": null
+    },
+    {
+      "name": "no head/neck folds (-5, 5, -8)",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "interior neck remains opaque (-5, 5, -8)",
+      "detail": null
+    },
+    {
+      "name": "no head/neck folds (0, 0, 5)",
+      "detail": {
+        "head": 0,
+        "neck": 0
+      }
+    },
+    {
+      "name": "interior neck remains opaque (0, 0, 5)",
+      "detail": null
+    },
+    {
+      "name": "accessories attach and settle downward at new limit",
+      "detail": [
+        {
+          "id": "earring_red",
+          "error": 1.0739263394583635e-05,
+          "angle": -0.0
+        },
+        {
+          "id": "earring_name",
+          "error": 1.2918061103998062e-05,
+          "angle": 7.328372292497915e-05
+        },
+        {
+          "id": "tassel_left_upper",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_left_middle",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_right_upper",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_right_middle",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_right_lower",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_left_lower",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_center_lower",
+          "error": 0,
+          "angle": -0.0
+        }
+      ]
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "scope": "rendered model and geometry; physical Mac camera and OBS unverified"
+}

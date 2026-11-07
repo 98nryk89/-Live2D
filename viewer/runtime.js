@@ -252,7 +252,10 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
             const g = e.gain != null ? e.gain : 1;
             const yaw = ((P[e.yaw] || 0) + (P.IdleX || 0) * (e.idle || 0)) * DEG * g;
             const pit = ((P[e.pitch] || 0) + (P.IdleY || 0) * (e.idle || 0)) * DEG * g;
-            const rol = (P[e.roll] || 0) * DEG * (e.rgain != null ? e.rgain : 1);
+            const rollValue=e.rollBounds?clamp(P[e.roll]||0,e.rollBounds[0],e.rollBounds[1]):(P[e.roll]||0);
+            const rol = rollValue * DEG * (e.rgain != null ? e.rgain : 1);
+            const extraAngle=e.extraRoll?mapLinear(e.extraRoll.map,P[e.extraRoll.param]||0)[0]*DEG:0;
+            const extraPivot=extraAngle?global.L2DGravity.parentPoint({parentHead:{...e,extraRoll:null},bodyScale:[0,0]},P,...e.extraRoll.pivot):null;
             const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pit), sp = Math.sin(pit);
             const cr = Math.cos(rol), sr = Math.sin(rol);
             const [cx, cyy] = e.center;
@@ -272,6 +275,7 @@ void main(){ vec4 c = texture(uTex, vUV); if (uCut > 0.0 && c.a < uCut) discard;
               if(e.restRoll){const a=e.restRoll*DEG,c=Math.cos(a),s=Math.sin(a),p=e.restRollPivot||pv2,dx=X-p[0],dy=Y-p[1];X=p[0]+dx*c-dy*s;Y=p[1]+dx*s+dy*c;}
               const dx = X - pv2[0], dy = Y - pv2[1];
               out[0] = pv2[0] + dx * cr - dy * sr; out[1] = pv2[1] + dx * sr + dy * cr;
+              if(extraAngle){const c=Math.cos(extraAngle),s=Math.sin(extraAngle),x=out[0]-extraPivot[0],y=out[1]-extraPivot[1];out[0]=extraPivot[0]+x*c-y*s;out[1]=extraPivot[1]+x*s+y*c;}
             };
             const rigid = e.rigid || 0;
             let a0 = null, J = null;

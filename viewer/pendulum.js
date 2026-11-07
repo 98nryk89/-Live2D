@@ -13,7 +13,11 @@
       const X=cx+u*Math.cos(a)+z*Math.sin(a),z1=-u*Math.sin(a)+z*Math.cos(a);
       x=X;y=cy+v*Math.cos(b)-z1*Math.sin(b);
       if(e.restRoll){const a=e.restRoll*DEG,c=Math.cos(a),s=Math.sin(a),p=e.restRollPivot||e.pivot||e.center,dx=x-p[0],dy=y-p[1];x=p[0]+dx*c-dy*s;y=p[1]+dx*s+dy*c;}
-      const p=e.pivot||e.center,r=(P[e.roll]||0)*DEG*(e.rgain??1),c=Math.cos(r),s=Math.sin(r),dx=x-p[0],dy=y-p[1];x=p[0]+dx*c-dy*s;y=p[1]+dx*s+dy*c;
+      const p=e.pivot||e.center,r=(e.rollBounds?clamp(P[e.roll]||0,e.rollBounds[0],e.rollBounds[1]):(P[e.roll]||0))*DEG*(e.rgain??1),c=Math.cos(r),s=Math.sin(r),dx=x-p[0],dy=y-p[1];x=p[0]+dx*c-dy*s;y=p[1]+dx*s+dy*c;
+      if(e.extraRoll){
+        const angle=global.L2D.mapLinear(e.extraRoll.map,P[e.extraRoll.param]||0)[0]*DEG;
+        if(angle){const pivot=parentPoint({parentHead:{...e,extraRoll:null},bodyScale:[0,0]},P,...e.extraRoll.pivot),c=Math.cos(angle),s=Math.sin(angle),dx=x-pivot[0],dy=y-pivot[1];x=pivot[0]+dx*c-dy*s;y=pivot[1]+dx*s+dy*c;}
+      }
     }
     return [x+(P.BodyX||0)*d.bodyScale[0],y+(P.BodyY||0)*d.bodyScale[1]];
   }

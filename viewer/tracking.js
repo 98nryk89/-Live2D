@@ -158,7 +158,7 @@
       const bx = -(mid.x - this.neutral.x) / this.neutral.eyeDist * 1.5 * o.gainMove * (o.invX ? -1 : 1);
       const by = (mid.y - this.neutral.y) / this.neutral.eyeDist * 1.5 * o.gainMove * (o.invY ? -1 : 1);
       const t = {
-        AngleX: clamp(ax, -5, 5), AngleY: clamp(ay, -10, 5), AngleZ: clamp(az, -5, 5),
+        AngleX: clamp(ax, -5, 5), AngleY: clamp(ay, -10, 5), AngleZ: clamp(az, -8, 5),
         BodyX: clamp(bx, -1, 1), BodyY: clamp(by, -1, 1),
       };
       const bs = {};

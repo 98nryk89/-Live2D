@@ -17,6 +17,7 @@ v_reference=json.loads((ROOT/'reference_sources/v_completed_neck.json').read_tex
 y_scale=(490-435)/(v_reference['fixed_neck_y']-v_reference['measured_chin_y'])
 map_y=lambda y:435+(y-v_reference['measured_chin_y'])*y_scale
 head={'type':'head3d','yaw':'AngleX','pitch':'AngleY','roll':'AngleZ','center':[680,300],'pivot':[687,map_y(v_reference['head']['pivot'][1])],'Rx':245,'Ry':255,'Rz':155,'k':.65,'restRoll':6.530486248611499,'restRollPivot':[687,435]}
+head.update(rollBounds=[-5,5],extraRoll={'param': 'AngleZ', 'map': [[-8, -3], [-5, 0], [0, 0], [5, 0]], 'pivot': [687, 435]})
 effects=[head,{'type':'translate','param':'BodyX','map':[[-1,-135,0],[0,0,0],[1,135,0]]},{'type':'translate','param':'BodyY','map':[[-1,0,-70],[0,0,0],[1,0,70]]}]
 parts=[]
 segmentation=segmentation_masks(base)
@@ -29,6 +30,7 @@ def part(pid,im,x,y,selector=None):
  if selector:es.insert(0,{'type':'feature','group':selector[0],'index':selector[1]})
  parts.append({'id':pid,'z':len(parts),'tex':tex,'mesh':mesh,'effects':es})
 neck_effect=copy.deepcopy(head)
+neck_effect.pop('extraRoll',None)
 neck_effect.update(vz=True,k=1,rigid=0,weight={'mode':'y','from':map_y(v_reference['neck']['effects'][1]['weight']['from']),'to':map_y(v_reference['neck']['effects'][1]['weight']['to'])})
 # V's cylindrical neck depth, expressed in this character's existing face-depth units.
 jaw_r2=((689-head['center'][0])/head['Rx'])**2+((435-head['center'][1])/head['Ry'])**2
@@ -98,7 +100,7 @@ def param(id,lo,hi,default,label,step=None):
  p={'id':id,'min':lo,'max':hi,'default':default,'label':label}
  if step:p['step']=step
  params.append(p)
-for id,lo,hi,label in [('AngleX',-5,5,'顔 左右'),('AngleY',-10,5,'顔 下・上'),('AngleZ',-5,5,'顔 かしげ（左右5度）'),('BodyX',-1,1,'全体 左右'),('BodyY',-1,1,'全体 上下')]:param(id,lo,hi,0,label)
+for id,lo,hi,label in [('AngleX',-5,5,'顔 左右'),('AngleY',-10,5,'顔 下・上'),('AngleZ',-8,5,'かしげ（顔 左8度・右5度）'),('BodyX',-1,1,'全体 左右'),('BodyY',-1,1,'全体 上下')]:param(id,lo,hi,0,label)
 for id,label in [('EyeLOpen','左目'),('EyeROpen','右目')]:param(id,0,1,1,label)
 param('MouthOpen',0,1,0,'口 開き');param('MouthForm',0,2,0,'口 0あ/1い/2え',1)
 for id,label in [('Smile','笑顔'),('Surprise','驚き')]:param(id,0,1,0,label,1)
