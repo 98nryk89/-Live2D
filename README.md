@@ -15,3 +15,5 @@ FinderでZIPを展開し、中のmukachi_kachi_webcam_0.9.0.htmlをChromeで開�
 再生成：Python仮想環境でrequirements-validated.txtを導入し、tools/prepare_character.py → tools/prepare_revision4.py → tools/build_character.py → tools/export_webcam.pyを順に実行します。
 
 [首の作画依頼書](docs/neck-material-request.md) ／ [絵師へ渡す資料ZIP](https://github.com/98nryk89/-Live2D/raw/refs/heads/codex/webcam-distribution/dist/mukachi_kachi_neck_materials.zip)
+
+[新しく受領した首かしげ素材の評価と次の生成プロンプト](docs/neck-pose-assessment.md)

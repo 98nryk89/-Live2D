@@ -1,0 +1,162 @@
+{
+  "method": "SIFT/RANSAC similarity transform; torso registration, then hair correspondence; positive roll is screen-clockwise. Head angle is image correspondence, not anatomical ground truth. No rig modified.",
+  "upright_correction_clockwise_degrees": 6.530486248611499,
+  "sources": [
+    {
+      "file": "character_materials/mukachi_kachi/neck_pose_originals/右傾きの貴族風くま耳少年.png",
+      "sha256": "112dcf9e11f8a95df122e1d410ef1610d613892750788ce28c7463fee55d43aa",
+      "role": "screen_right",
+      "size": [
+        1350,
+        1165
+      ],
+      "mode": "RGBA",
+      "body_to_original": [
+        [
+          0.9981664744797654,
+          -0.0005377952166554108,
+          0.9268165776102786
+        ],
+        [
+          0.0005377952166554108,
+          0.9981664744797654,
+          0.9176138372300706
+        ]
+      ],
+      "body_fit": {
+        "matched": 1675,
+        "inliers": 1407,
+        "median_error_px": 0.6592059710734817,
+        "scale": 0.9981666193572389,
+        "clockwise_degrees": 0.030869994097087437
+      },
+      "head_original_to_registered": [
+        [
+          0.9608650664873094,
+          -0.29864665060023277,
+          146.65610698670883
+        ],
+        [
+          0.29864665060023277,
+          0.9608650664873094,
+          -188.04734288463032
+        ]
+      ],
+      "head_fit": {
+        "matched": 77,
+        "inliers": 30,
+        "median_error_px": 0.8361013673221948,
+        "scale": 1.006206488704182,
+        "clockwise_degrees": 17.26577688032939,
+        "relative_to_current_upright_degrees": 10.735290631717891
+      },
+      "registered_torso_mean_rgb_difference": 11.79407493653445,
+      "alpha_zero_pixels": 790223,
+      "alpha_low_1_to_15_pixels": 18873
+    },
+    {
+      "file": "character_materials/mukachi_kachi/neck_pose_originals/左に傾く熊耳少年の華麗な制服姿.png",
+      "sha256": "0df427b976d9296b97441fab0e81f909c5f04ffb412897e723c56c8b43f5c5c3",
+      "role": "screen_left",
+      "size": [
+        1350,
+        1165
+      ],
+      "mode": "RGBA",
+      "body_to_original": [
+        [
+          0.9989794914965449,
+          -0.00032380689512820273,
+          0.3489519170193279
+        ],
+        [
+          0.00032380689512820273,
+          0.9989794914965449,
+          0.32479881145691897
+        ]
+      ],
+      "body_fit": {
+        "matched": 1735,
+        "inliers": 1600,
+        "median_error_px": 0.4472788445155381,
+        "scale": 0.9989795439755514,
+        "clockwise_degrees": 0.01857172041694026
+      },
+      "head_original_to_registered": [
+        [
+          1.0022537472513895,
+          0.09932323140023826,
+          -38.38407181139972
+        ],
+        [
+          -0.09932323140023826,
+          1.0022537472513895,
+          70.96862630817618
+        ]
+      ],
+      "head_fit": {
+        "matched": 102,
+        "inliers": 49,
+        "median_error_px": 0.6682222882376754,
+        "scale": 1.0071631834887718,
+        "clockwise_degrees": -5.659526448421657,
+        "relative_to_current_upright_degrees": -12.190012697033156
+      },
+      "registered_torso_mean_rgb_difference": 8.646756270529794,
+      "alpha_zero_pixels": 764391,
+      "alpha_low_1_to_15_pixels": 50482
+    },
+    {
+      "file": "character_materials/mukachi_kachi/neck_pose_originals/無価値価値の自然な首元修正版.png",
+      "sha256": "73577e087274a0e0b513d4080586ce7d8b8396baee79b4db31a13a94fcff3ecb",
+      "role": "neutral_requested",
+      "size": [
+        1350,
+        1165
+      ],
+      "mode": "RGBA",
+      "body_to_original": [
+        [
+          0.9982792583287049,
+          -0.0002833748760866715,
+          0.24988598367127904
+        ],
+        [
+          0.0002833748760866715,
+          0.9982792583287049,
+          1.0466873827303047
+        ]
+      ],
+      "body_fit": {
+        "matched": 1648,
+        "inliers": 1519,
+        "median_error_px": 0.5306835716231745,
+        "scale": 0.9982792985485723,
+        "clockwise_degrees": 0.016264170419503655
+      },
+      "head_original_to_registered": [
+        [
+          1.0029411462312974,
+          0.0021294590202302665,
+          -3.1872997294042698
+        ],
+        [
+          -0.0021294590202302665,
+          1.0029411462312974,
+          2.081973720935158
+        ]
+      ],
+      "head_fit": {
+        "matched": 123,
+        "inliers": 103,
+        "median_error_px": 0.4936339589327763,
+        "scale": 1.0029434068777099,
+        "clockwise_degrees": -0.12165103767429435,
+        "relative_to_current_upright_degrees": -6.652137286285794
+      },
+      "registered_torso_mean_rgb_difference": 8.858543506604603,
+      "alpha_zero_pixels": 798336,
+      "alpha_low_1_to_15_pixels": 16215
+    }
+  ]
+}
