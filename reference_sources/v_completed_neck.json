@@ -1,0 +1,91 @@
+{
+  "repository": "https://github.com/98nryk89/V",
+  "completed_commit": "91f240f75a437830697126397fce60a8202b6b16",
+  "webcam_commit": "6a5e70a5f69bfcb85706e82e5ffa9149319b78d9",
+  "params": [
+    {
+      "id": "AngleX",
+      "min": -5,
+      "max": 5,
+      "default": 0,
+      "label": "顔の向き 左右"
+    },
+    {
+      "id": "AngleY",
+      "min": -10,
+      "max": 5,
+      "default": 0,
+      "label": "顔の向き 上下"
+    },
+    {
+      "id": "AngleZ",
+      "min": -5,
+      "max": 5,
+      "default": 0,
+      "label": "首かしげ"
+    }
+  ],
+  "head": {
+    "type": "head3d",
+    "vz": true,
+    "center": [
+      562,
+      405
+    ],
+    "yaw": "AngleX",
+    "pitch": "AngleY",
+    "roll": "AngleZ",
+    "pivot": [
+      565,
+      610
+    ],
+    "idle": 0.35,
+    "rigid": 0,
+    "k": 0.5
+  },
+  "neck": {
+    "effects": [
+      "@breath_body",
+      {
+        "type": "head3d",
+        "vz": true,
+        "center": [
+          562,
+          405
+        ],
+        "yaw": "AngleX",
+        "pitch": "AngleY",
+        "roll": "AngleZ",
+        "pivot": [
+          565,
+          610
+        ],
+        "idle": 0.35,
+        "rigid": 0,
+        "weight": {
+          "mode": "y",
+          "from": 640,
+          "to": 540
+        }
+      },
+      "@body_follow"
+    ],
+    "depth": {
+      "layer": "neck"
+    },
+    "mesh_step": 10
+  },
+  "measured_chin_y": 568,
+  "fixed_neck_y": 640,
+  "neck_depth": 72,
+  "neck_half_width": 92,
+  "underjaw_script": "tools/refine_face.py",
+  "jaw_plane_depth": 121.839,
+  "source_files_sha256": {
+    "projects/owl_prince/rig_spec.json": "7c32da9882d03972f6c579996f1fa29e1b1e81d29674679eda2c33bce281b79e",
+    "projects/owl_prince/parts_spec.json": "e66675c1ecbf684b0de2741d0a776f67edbe2d138e45c7fd3adc1dc27b134ad2",
+    "projects/owl_prince/head_model.json": "59887cbb983a16346d69f0e4d0769b176a6646b7e22b16a1ca7aa0c883b0b870",
+    "tools/refine_face.py": "6b34de621f5f26ae4b6297dff7a6742e2b2dbabc1c6ee78ca843e19d93876293"
+  },
+  "neck_template_matches_approved_webcam": true
+}

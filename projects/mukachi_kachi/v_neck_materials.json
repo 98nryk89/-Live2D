@@ -1,0 +1,11 @@
+{
+  "source": "character_materials/mukachi_kachi/base.png",
+  "source_sha256": "6f89edeb3008b213fc3a34c63024d12ec0cd0e5b3f28b8835a8f75095038d65b",
+  "source_neck_pixels_preserved": 5393,
+  "neck_texture": "original RGB, including contour and shading",
+  "underjaw_backing": "same-image neck skin copied only into the occluded duplicate jaw stroke",
+  "collar_overlap": "same-image skin beneath foreground collar; collar stroke retained in foreground",
+  "generated_neck_layers_used": [],
+  "reference": "98nryk89/V @91f240f75a437830697126397fce60a8202b6b16 tools/refine_face.py and neck rig",
+  "collar_backing": "original lining sampled into small hidden side regions behind the neck"
+}

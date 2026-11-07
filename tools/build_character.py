@@ -1,4 +1,4 @@
-"""Build a rigid jaw, supplied neck surface and source-pixel expression replacements.
+"""Build the original painted neck using the completed V rig as reference.
 No generative repaint; only reference registration and geometric resampling.
 """
 from pathlib import Path
@@ -9,11 +9,14 @@ from live2d_ai.build import make_mesh
 from character_features import mouth_sprites,mouth_axes
 from character_blinks import authored_eye_sprites
 from character_accessories import split_accessories
-from character_neck import prepare_skin,split_with_neck
+from character_v_neck import split_original_neck
 from character_segmentation import segmentation_masks
 ROOT=Path(__file__).resolve().parents[1];P=ROOT/'projects/mukachi_kachi';OUT=P/'out';OUT.mkdir(exist_ok=True)
 images={p.stem:cv2.imread(str(p),-1) for p in (P/'aligned').glob('*.png')};base=images['base'];H,W=base.shape[:2]
-head={'type':'head3d','yaw':'AngleX','pitch':'AngleY','roll':'AngleZ','center':[680,300],'pivot':[680,485],'Rx':245,'Ry':255,'Rz':155,'k':.65,'restRoll':6.530486248611499,'restRollPivot':[687,435]}
+v_reference=json.loads((ROOT/'reference_sources/v_completed_neck.json').read_text())
+y_scale=(490-435)/(v_reference['fixed_neck_y']-v_reference['measured_chin_y'])
+map_y=lambda y:435+(y-v_reference['measured_chin_y'])*y_scale
+head={'type':'head3d','yaw':'AngleX','pitch':'AngleY','roll':'AngleZ','center':[680,300],'pivot':[687,map_y(v_reference['head']['pivot'][1])],'Rx':245,'Ry':255,'Rz':155,'k':.65,'restRoll':6.530486248611499,'restRollPivot':[687,435]}
 effects=[head,{'type':'translate','param':'BodyX','map':[[-1,-135,0],[0,0,0],[1,135,0]]},{'type':'translate','param':'BodyY','map':[[-1,0,-70],[0,0,0],[1,0,70]]}]
 parts=[]
 segmentation=segmentation_masks(base)
@@ -21,19 +24,24 @@ for name,mask in segmentation.items():cv2.imwrite(str(P/(name+'_foreground_mask.
 backed,accessories=split_accessories(base,P,clean=images['clean_backing'])
 def part(pid,im,x,y,selector=None):
  tex=pid+'.png';cv2.imwrite(str(OUT/tex),im)
- mesh=make_mesh(im[:,:,3]/255,x,y,4 if pid in ["head","neck_skin"] else 12)
+ mesh=make_mesh(im[:,:,3]/255,x,y,6 if pid=="neck" else 4 if pid=="head" else 12)
  es=copy.deepcopy(effects)
  if selector:es.insert(0,{'type':'feature','group':selector[0],'index':selector[1]})
  parts.append({'id':pid,'z':len(parts),'tex':tex,'mesh':mesh,'effects':es})
-neck_skin,neck_shadow=prepare_skin(images,P)
-neck_definition={'head':copy.deepcopy(head),'left':[628,405],'right':[748,405],'base':[687,490],'restTop':405,'restBottom':490,'sourceCenterX':684,'sourceHalf':62,'bottomHalf':64}
-for name,sprite in split_with_neck(backed,images['clean_backing'],segmentation,neck_skin,neck_shadow):
+neck_effect=copy.deepcopy(head)
+neck_effect.update(vz=True,k=1,rigid=0,weight={'mode':'y','from':map_y(v_reference['neck']['effects'][1]['weight']['from']),'to':map_y(v_reference['neck']['effects'][1]['weight']['to'])})
+# V's cylindrical neck depth, expressed in this character's existing face-depth units.
+jaw_r2=((689-head['center'][0])/head['Rx'])**2+((435-head['center'][1])/head['Ry'])**2
+face_z=head['k']*head['Rz']*np.sqrt(1-jaw_r2)
+neck_depth=v_reference['neck_depth']*face_z/(v_reference['jaw_plane_depth']*v_reference['head']['k'])
+for name,sprite in split_original_neck(backed,images['clean_backing'],segmentation):
  part(name,sprite,0,0)
- if name in ['body','collar','collar_back','companion']:parts[-1]['effects']=copy.deepcopy(effects[1:])
- elif name=='neck_skin':
-  parts[-1]['effects']=[{'type':'neck-tube','definition':neck_definition}]+copy.deepcopy(effects[1:]);parts[-1]['z']=-20
- elif name=='jaw_shadow':parts[-1]['clip']='neck_skin';parts[-1]['z']=-15
- if name=='collar_back':parts[-1]['z']=-30
+ if name in ['body','collar','collar_backing','companion']:parts[-1]['effects']=copy.deepcopy(effects[1:])
+ elif name=='neck':
+  parts[-1]['effects']=[copy.deepcopy(neck_effect)]+copy.deepcopy(effects[1:]);parts[-1]['z']=-20
+  vertices=np.array(parts[-1]['mesh']['verts']).reshape(-1,2)
+  parts[-1]['mesh']['z']=(neck_depth*np.sqrt(np.clip(1-((vertices[:,0]-688)/63)**2,0,1))).round(3).tolist()
+ if name=='collar_backing':parts[-1]['z']=-30
  if name=='companion':parts[-1]['z']=900
  if name=='collar':parts[-1]['z']=850
 
@@ -99,5 +107,5 @@ param('AccessoryGain',0,2,.5,'アクセサリーの揺れ量')
 for d in physics:params.append({'id':d['output'],'min':-65,'max':65,'default':0,'hidden':True})
 rig={'version':1,'name':'無価値価値','modelId':'mukachi_kachi','size':[W,H],'view':[-210,-115,1770,1400],'params':params,'parts':parts,'physics':physics,'eyeMode':'authored-three-poses'}
 (OUT/'rig.json').write_text(json.dumps(rig,ensure_ascii=False,separators=(',',':')))
-(P/'rig_spec.json').write_text(json.dumps({'method':'rigid jaw and supplied neck surface, independent shadow and fixed collar','neck_connection':{'mesh':'neck_skin','definition':neck_definition,'shadow_clip':'neck_skin','step':4},'companion_blink':{'period_seconds':4,'closed_eyes_source':'smile','independent':True},'head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'approved sheet, open/half/closed source pixels only','mouth':'neutral lip erased only','accessories':'supplied clean backing beneath isolated ornaments'},'mouth_steps':32,'eyes':'three approved drawings, no local warps or synthetic intermediate frames','accessory_physics':{'mode':'gravity-pendulum','gravity_axis':'+Y','gravity':2200,'damping_ratio':.24,'limits_degrees':65,'motion_gain_default':.5},'accessories':[a[0] for a in accessories],'limitations':['Supplied curved neck surface with independent shadow; appearance requires review; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
+(P/'rig_spec.json').write_text(json.dumps({'method':'original painted neck; completed V head/neck/body layout','neck_connection':{'mesh':'neck','effect':neck_effect,'depth':float(neck_depth),'step':6,'reference':'reference_sources/v_completed_neck.json','materials':'projects/mukachi_kachi/v_neck_materials.json'},'companion_blink':{'period_seconds':4,'closed_eyes_source':'smile','independent':True},'head':head,'body_motion_px':[135,70],'independent_hair_physics':False,'hidden_region_backing':{'eyes':'approved sheet, open/half/closed source pixels only','mouth':'neutral lip erased only','accessories':'supplied clean backing beneath isolated ornaments'},'mouth_steps':32,'eyes':'three approved drawings, no local warps or synthetic intermediate frames','accessory_physics':{'mode':'gravity-pendulum','gravity_axis':'+Y','gravity':2200,'damping_ratio':.24,'limits_degrees':65,'motion_gain_default':.5},'accessories':[a[0] for a in accessories],'limitations':['Original neck pixels preserved; V-style weighting; appearance requires review; long hidden hair not reconstructed','Input closed-mouth misclassification remains an unverified baseline issue','Source silhouette colour fringe retained; local hidden ornament backing reconstructed']},ensure_ascii=False,indent=2))
 print('built',len(parts),'mesh layers; source SHA',hashlib.sha256((ROOT/'character_materials/mukachi_kachi/base.png').read_bytes()).hexdigest())

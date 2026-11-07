@@ -1,51 +1,41 @@
 {
-  "method": "rigid jaw and supplied neck surface, independent shadow and fixed collar",
+  "method": "original painted neck; completed V head/neck/body layout",
   "neck_connection": {
-    "mesh": "neck_skin",
-    "definition": {
-      "head": {
-        "type": "head3d",
-        "yaw": "AngleX",
-        "pitch": "AngleY",
-        "roll": "AngleZ",
-        "center": [
-          680,
-          300
-        ],
-        "pivot": [
-          680,
-          485
-        ],
-        "Rx": 245,
-        "Ry": 255,
-        "Rz": 155,
-        "k": 0.65,
-        "restRoll": 6.530486248611499,
-        "restRollPivot": [
-          687,
-          435
-        ]
-      },
-      "left": [
-        628,
-        405
+    "mesh": "neck",
+    "effect": {
+      "type": "head3d",
+      "yaw": "AngleX",
+      "pitch": "AngleY",
+      "roll": "AngleZ",
+      "center": [
+        680,
+        300
       ],
-      "right": [
-        748,
-        405
-      ],
-      "base": [
+      "pivot": [
         687,
-        490
+        467.0833333333333
       ],
-      "restTop": 405,
-      "restBottom": 490,
-      "sourceCenterX": 684,
-      "sourceHalf": 62,
-      "bottomHalf": 64
+      "Rx": 245,
+      "Ry": 255,
+      "Rz": 155,
+      "k": 1,
+      "restRoll": 6.530486248611499,
+      "restRollPivot": [
+        687,
+        435
+      ],
+      "vz": true,
+      "rigid": 0,
+      "weight": {
+        "mode": "y",
+        "from": 490.0,
+        "to": 413.6111111111111
+      }
     },
-    "shadow_clip": "neck_skin",
-    "step": 4
+    "depth": 100.9244629265978,
+    "step": 6,
+    "reference": "reference_sources/v_completed_neck.json",
+    "materials": "projects/mukachi_kachi/v_neck_materials.json"
   },
   "companion_blink": {
     "period_seconds": 4,
@@ -62,8 +52,8 @@
       300
     ],
     "pivot": [
-      680,
-      485
+      687,
+      467.0833333333333
     ],
     "Rx": 245,
     "Ry": 255,
@@ -107,7 +97,7 @@
     "tassel_center_lower"
   ],
   "limitations": [
-    "Supplied curved neck surface with independent shadow; appearance requires review; long hidden hair not reconstructed",
+    "Original neck pixels preserved; V-style weighting; appearance requires review; long hidden hair not reconstructed",
     "Input closed-mouth misclassification remains an unverified baseline issue",
     "Source silhouette colour fringe retained; local hidden ornament backing reconstructed"
   ]

@@ -1,0 +1,10 @@
+{
+  "version": "0.11.0",
+  "model_checks": 43,
+  "camera_distribution_checks": 7,
+  "reference_commit": "91f240f75a437830697126397fce60a8202b6b16",
+  "reference_webcam_commit": "6a5e70a5f69bfcb85706e82e5ffa9149319b78d9",
+  "zip_sha256": "756f7e6cb2e7837adb00dc27b63b132399bc8d116f8eeaec49b908edbb449e0e",
+  "generated_neck_layers_used": false,
+  "physical_mac_camera_obs": "unverified"
+}

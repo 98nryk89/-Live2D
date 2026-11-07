@@ -1,0 +1,325 @@
+{
+  "count": 43,
+  "passed": [
+    {
+      "name": "V completed AngleX range",
+      "detail": [
+        -5,
+        5
+      ]
+    },
+    {
+      "name": "V completed AngleY range",
+      "detail": [
+        -10,
+        5
+      ]
+    },
+    {
+      "name": "V completed AngleZ range",
+      "detail": [
+        -5,
+        5
+      ]
+    },
+    {
+      "name": "V linear neck weighting mapped by jaw/collar landmarks",
+      "detail": {
+        "mode": "y",
+        "from": 490.0,
+        "to": 413.6111111111111
+      }
+    },
+    {
+      "name": "V pivot mapped above collar rather than previous low pivot",
+      "detail": [
+        687,
+        467.0833333333333
+      ]
+    },
+    {
+      "name": "V cylindrical neck depth is active",
+      "detail": null
+    },
+    {
+      "name": "generated neck and separate invented shadow removed",
+      "detail": null
+    },
+    {
+      "name": "original contour/shading RGB preserved (631, 435)",
+      "detail": [
+        45,
+        6,
+        0,
+        252
+      ]
+    },
+    {
+      "name": "original contour/shading RGB preserved (748, 440)",
+      "detail": [
+        111,
+        57,
+        55,
+        253
+      ]
+    },
+    {
+      "name": "original contour/shading RGB preserved (650, 435)",
+      "detail": [
+        243,
+        158,
+        136,
+        253
+      ]
+    },
+    {
+      "name": "original contour/shading RGB preserved (675, 450)",
+      "detail": [
+        237,
+        155,
+        133,
+        253
+      ]
+    },
+    {
+      "name": "original contour/shading RGB preserved (700, 460)",
+      "detail": [
+        251,
+        210,
+        193,
+        253
+      ]
+    },
+    {
+      "name": "dark neck outline retained (631, 435)",
+      "detail": null
+    },
+    {
+      "name": "dark neck outline retained (748, 440)",
+      "detail": null
+    },
+    {
+      "name": "accepted expressions/cutouts retained",
+      "detail": {
+        "parts": 124
+      }
+    },
+    {
+      "name": "input ranges and small accessory gain unchanged",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained earring_red",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained earring_name",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained tassel_left_upper",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained tassel_left_middle",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained tassel_right_upper",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained tassel_right_middle",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained tassel_right_lower",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained tassel_left_lower",
+      "detail": null
+    },
+    {
+      "name": "pendulum settings retained tassel_center_lower",
+      "detail": null
+    },
+    {
+      "name": "neck source is original base only",
+      "detail": null
+    },
+    {
+      "name": "V neck base fixed and no folded meshes {'AngleZ': -5}",
+      "detail": {
+        "folds": {
+          "head": 0,
+          "neck": 0
+        },
+        "base": 0
+      }
+    },
+    {
+      "name": "no interior neck holes {'AngleZ': -5}",
+      "detail": {
+        "min_alpha": 253
+      }
+    },
+    {
+      "name": "V neck base fixed and no folded meshes {'AngleZ': -2.5}",
+      "detail": {
+        "folds": {
+          "head": 0,
+          "neck": 0
+        },
+        "base": 0
+      }
+    },
+    {
+      "name": "no interior neck holes {'AngleZ': -2.5}",
+      "detail": {
+        "min_alpha": 253
+      }
+    },
+    {
+      "name": "V neck base fixed and no folded meshes {'AngleZ': 0}",
+      "detail": {
+        "folds": {
+          "head": 0,
+          "neck": 0
+        },
+        "base": 0
+      }
+    },
+    {
+      "name": "no interior neck holes {'AngleZ': 0}",
+      "detail": {
+        "min_alpha": 253
+      }
+    },
+    {
+      "name": "V neck base fixed and no folded meshes {'AngleZ': 2.5}",
+      "detail": {
+        "folds": {
+          "head": 0,
+          "neck": 0
+        },
+        "base": 0
+      }
+    },
+    {
+      "name": "no interior neck holes {'AngleZ': 2.5}",
+      "detail": {
+        "min_alpha": 253
+      }
+    },
+    {
+      "name": "V neck base fixed and no folded meshes {'AngleZ': 5}",
+      "detail": {
+        "folds": {
+          "head": 0,
+          "neck": 0
+        },
+        "base": 0
+      }
+    },
+    {
+      "name": "no interior neck holes {'AngleZ': 5}",
+      "detail": {
+        "min_alpha": 253
+      }
+    },
+    {
+      "name": "V neck base fixed and no folded meshes {'AngleX': 5, 'AngleY': -10, 'AngleZ': 5}",
+      "detail": {
+        "folds": {
+          "head": 0,
+          "neck": 0
+        },
+        "base": 0
+      }
+    },
+    {
+      "name": "no interior neck holes {'AngleX': 5, 'AngleY': -10, 'AngleZ': 5}",
+      "detail": {
+        "min_alpha": 253
+      }
+    },
+    {
+      "name": "V neck base fixed and no folded meshes {'AngleX': -5, 'AngleY': 5, 'AngleZ': -5}",
+      "detail": {
+        "folds": {
+          "head": 0,
+          "neck": 0
+        },
+        "base": 0
+      }
+    },
+    {
+      "name": "no interior neck holes {'AngleX': -5, 'AngleY': 5, 'AngleZ': -5}",
+      "detail": {
+        "min_alpha": 253
+      }
+    },
+    {
+      "name": "neutral face retained",
+      "detail": {
+        "mean_rgba_error": 0.0029945054945054944
+      }
+    },
+    {
+      "name": "gravity attachments follow reference-based head pivot and settle down",
+      "detail": [
+        {
+          "id": "earring_red",
+          "error": 1.5124631689772492e-05,
+          "angle": -0.0
+        },
+        {
+          "id": "earring_name",
+          "error": 1.667580516016507e-05,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_left_upper",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_left_middle",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_right_upper",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_right_middle",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_right_lower",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_left_lower",
+          "error": 0,
+          "angle": -0.0
+        },
+        {
+          "id": "tassel_center_lower",
+          "error": 0,
+          "angle": -0.0
+        }
+      ]
+    },
+    {
+      "name": "no browser script errors",
+      "detail": []
+    }
+  ],
+  "scope": "V-source comparison, source RGB and renderer; physical Mac camera/OBS unverified; visual comparison remains necessary"
+}
