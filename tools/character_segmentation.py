@@ -27,4 +27,12 @@ def refine_contour(original,polygon,extra_foreground=None):
  return result
 
 def segmentation_masks(original):
- return {name:refine_contour(original,polygon) for name,polygon in {'companion':COMPANION_OUTLINE,**HEAD_EARS}.items()}
+ masks={name:refine_contour(original,polygon) for name,polygon in {'companion':COMPANION_OUTLINE,**HEAD_EARS}.items()}
+ # GrabCut classifies the dark outer ear line as adjoining hair. Preserve the
+ # authored contour in this small, traced ear region; never repaint source RGB.
+ ear=np.array([[474,372],[474,367],[476,360],[479,354],[484,349],
+  [489,346],[494,345],[497,344],[501,345],[505,345],[510,347],
+  [514,349],[519,353],[522,356],[522,362],[524,366],[524,373],
+  [522,378],[519,383],[510,378],[490,374]],np.int32)
+ cv2.fillPoly(masks['companion'],[ear],255)
+ return masks
